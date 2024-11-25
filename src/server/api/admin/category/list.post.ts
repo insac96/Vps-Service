@@ -17,7 +17,7 @@ export default defineEventHandler(async (event) => {
     .aggregate([
       {
         $lookup: {
-          from: "News",
+          from: "Product",
           localField: "_id",
           foreignField: "category",
           as: "productList"

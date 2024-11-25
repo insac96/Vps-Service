@@ -35,13 +35,12 @@
             <UiText size="sm" color="gray" weight="semibold" class="mr-auto" mini>Hòm thư</UiText>
             <UiText size="sm" weight="semibold" align="right" class="ml-6">{{ contact.email || '...' }}</UiText>
           </UiFlex>
-
           <template #footer>
             <UiFlex justify="center" class="mt-4 gap-2" wrap>
               <div class="cursor-pointer" v-for="(value, key) in social" :key="key" @click="open(value)">
                 <UiImg 
                   class="max-w-[45px] max-h-[45px] rounded-full"
-                  :src="`/images/social/${key}.png`"
+                  :src="`/images/social/${key}.webp`"
                   w="1" h="1"
                   imgW="90" imgH="90"
                   :alt="key"
@@ -59,7 +58,7 @@ const configStore = useConfigStore()
 const contact = ref(configStore.config.contact)
 const social = ref(configStore.config.social)
 const modal = ref(false)
-
+  
 const open = (url) => {
   if(!url) return useNotify().error('Chúng tôi đang cập nhật thông tin, vui lòng quay lại sau')
   window.open(url, '_blank')

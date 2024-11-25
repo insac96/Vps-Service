@@ -10,7 +10,6 @@
       ">
       <UiLogo class="cursor-pointer" @click="navigateTo('/')" />
     </UiFlex>
-
     <!--Menu-->
     <div class="w-full grow p-2 md:pt-2 pt-0">
       <LayoutDefaultNavMenu />

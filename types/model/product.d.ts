@@ -11,16 +11,9 @@ export interface IDBProduct {
   content: string
   og_image: string
   key: string
+  price: number
   images: string[]
-  view: number
+  options:Array
   pin: number
   display: boolean
-}
-export interface IDBProductOption {
-  _id: Types.ObjectId
-  createdAt: Date
-  updatedAt: Date
-  price: string
-  number: number
-  product: Types.ObjectId
 }

@@ -11,11 +11,19 @@
 
       <UTable v-model:sort="page.sort" :columns="selectedColumns" :rows="list">
         <template #category-data="{ row }">
-          <UBadge :color="row.category.color" variant="soft">{{ row.category.name }}</UBadge>
+          <UBadge :color="row.category.color" variant="soft">{{
+            row.category.name
+          }}</UBadge>
         </template>
 
         <template #title-data="{ row }">
-          <UiText class="min-w-[200px] max-w-[200px] whitespace-normal">{{ row.title }}</UiText>
+          <UiText class="min-w-[200px] max-w-[200px] whitespace-normal">{{
+            row.title
+          }}</UiText>
+        </template>
+
+        <template #price-data="{ row }">
+          <UiText>{{ useMoney().toMoney(row.price) }}</UiText>
         </template>
 
         <template #images-data="{ row }">
@@ -24,12 +32,12 @@
         </template>
 
         <template #pin-data="{ row }">
-          <UBadge :color="row.pin == 1 ? 'green' : 'gray'" variant="soft">{{ row.pin == 1 ? 'Đã ghim' : 'Không' }}
+          <UBadge :color="row.pin == 1 ? 'green' : 'gray'" variant="soft">{{ row.pin == 1 ? "Đã ghim" : "Không" }}
           </UBadge>
         </template>
 
         <template #display-data="{ row }">
-          <UBadge :color="row.display == 1 ? 'green' : 'gray'" variant="soft">{{ row.display == 1 ? 'Hiện' : 'Ẩn' }}
+          <UBadge :color="row.display == 1 ? 'green' : 'gray'" variant="soft">{{ row.display == 1 ? "Hiện" : "Ẩn" }}
           </UBadge>
         </template>
 
@@ -60,6 +68,10 @@
 
         <UFormGroup label="Tên sản phẩm">
           <UInput v-model="stateAdd.name" />
+        </UFormGroup>
+
+        <UFormGroup label="Giá sản phẩm">
+          <UInput v-model="stateAdd.price" />
         </UFormGroup>
 
         <UFormGroup label="Mô tả">
@@ -99,6 +111,10 @@
 
         <UFormGroup label="Tên sản phẩm">
           <UInput v-model="stateEdit.name" />
+        </UFormGroup>
+
+        <UFormGroup label="Giá sản phẩm">
+          <UInput v-model="stateEdit.price" />
         </UFormGroup>
 
         <UFormGroup label="Mô tả">
@@ -142,11 +158,24 @@
       </UForm>
     </UModal>
     <!-- Modal Price -->
-    <UModal v-model="modal.price" preventClose >
+    <UModal v-model="modal.price" preventClose>
       <UForm :state="statePrice" @submit="priceAction" class="p-4">
-        <UiFlex justify="end" class="mt-4">
-          <UButton type="submit" :loading="loading.price">Lưu</UButton>
-          <UButton color="gray" @click="modal.price = false" :disabled="loading.price" class="ml-1">Đóng</UButton>
+        <UiFlex class="align-center" v-for="(item, index) in options" :key="index">
+          <UFormGroup label="Tháng" class="w-1/4">
+            <UInput type="number" v-model="item.number" :min="0" step="0.01" required/>
+          </UFormGroup>
+          <UFormGroup label="Giá thuê/tháng" class="w-full ml-2">
+            <UInput v-model="item.price" type="number" :min="0" step="0.01" required/>
+          </UFormGroup>
+          <UButton type="button" icon="i-heroicons-trash" @click="removePrice(index)" color="red"
+            class="ml-2 mt-2 w-[40px] h-[40px] flex items-center justify-center" />
+        </UiFlex>
+        <UiFlex justify="between" class="mt-4">
+          <UButton type="button" @click="addPrice">Thêm</UButton>
+          <UiFlex>
+            <UButton type="submit" :loading="loading.price" class="ml-1">Lưu</UButton>
+            <UButton color="gray" @click="modal.price = false" :disabled="loading.price" class="ml-1">Đóng</UButton>
+          </UiFlex>
         </UiFlex>
       </UForm>
     </UModal>
@@ -155,56 +184,76 @@
 
 <script setup>
 // List
-const list = ref([])
-const arrayPrice = ref([])
+const list = ref([]);
+const options = ref([]);
+
 // Columns
 const columns = [
   {
-    key: 'name',
-    label: 'Tên sản phẩm',
-  }, {
-    key: 'images',
-    label: 'Hình ảnh',
-  }, {
-    key: 'category',
-    label: 'Danh mục',
-  }, {
-    key: 'view',
-    label: 'Lượt xem',
-    sortable: true
-  }, {
-    key: 'pin',
-    label: 'Ghim',
-    sortable: true
-  }, {
-    key: 'display',
-    label: 'Hiển thị',
-    sortable: true
-  }, {
-    key: 'updatedAt',
-    label: 'Cập nhật',
-    sortable: true
-  }, {
-    key: 'actions',
-    label: 'Chức năng',
-  }
-]
-const selectedColumns = ref([...columns])
+    key: "name",
+    label: "Tên sản phẩm",
+  },
+  {
+    key: "images",
+    label: "Hình ảnh",
+  },
+  {
+    key: "category",
+    label: "Danh mục",
+  },
+  {
+    key: "price",
+    label: "Giá sản phẩm",
+    sortable: true,
+  },
+  {
+    key: "pin",
+    label: "Ghim",
+    sortable: true,
+  },
+  {
+    key: "display",
+    label: "Hiển thị",
+    sortable: true,
+  },
+  {
+    key: "updatedAt",
+    label: "Cập nhật",
+    sortable: true,
+  },
+  {
+    key: "actions",
+    label: "Chức năng",
+  },
+];
+const selectedColumns = ref([...columns]);
 
 // Page
 const page = ref({
   size: 10,
   current: 1,
   sort: {
-    column: 'updatedAt',
-    direction: 'desc'
+    column: "updatedAt",
+    direction: "desc",
   },
-  total: 0
-})
-watch(() => page.value.size, () => getList())
-watch(() => page.value.current, () => getList())
-watch(() => page.value.sort.column, () => getList())
-watch(() => page.value.sort.direction, () => getList())
+  total: 0,
+});
+watch(
+  () => page.value.size,
+  () => getList()
+);
+watch(
+  () => page.value.current,
+  () => getList()
+);
+watch(
+  () => page.value.sort.column,
+  () => getList()
+);
+watch(
+  () => page.value.sort.direction,
+  () => getList()
+);
 
 // State
 const stateAdd = ref({
@@ -213,40 +262,51 @@ const stateAdd = ref({
   description: null,
   og_image: null,
   images: [],
+  price: undefined,
   pin: false,
-  display: true
-})
+  display: true,
+});
 const stateEdit = ref({
   _id: null,
   category: null,
   name: null,
   description: null,
   og_image: null,
+  price: undefined,
   images: [],
   pin: null,
-  display: null
-})
+  display: null,
+});
 const stateContent = ref({
   _id: null,
-  content: null
-})
-
+  content: null,
+});
+const statePrice = ref({
+  price: null,
+  number: undefined,
+});
+const productId = ref(null);
 // Modal
 const modal = ref({
   add: false,
   edit: false,
   content: false,
-  price: false
-})
+  price: false,
+});
 
-watch(() => modal.value.add, (val) => !val && (stateAdd.value = {
-  category: null,
-  title: null,
-  description: null,
-  og_image: null,
-  pin: false,
-  display: true
-}))
+watch(
+  () => modal.value.add,
+  (val) =>
+    !val &&
+    (stateAdd.value = {
+      category: null,
+      title: null,
+      description: null,
+      og_image: null,
+      pin: false,
+      display: true,
+    })
+);
 
 // Loading
 const loading = ref({
@@ -254,126 +314,168 @@ const loading = ref({
   add: false,
   edit: false,
   del: false,
-  content: false
-})
+  content: false,
+});
+const addPrice = () => {
+  options.value.push({ ...statePrice.value });
+};
 
+const removePrice = (index) => {
+  options.value.splice(index, 1);
+}
 // Actions
 const actions = (row) => [
-  [{
-    label: 'Xem trực tiếp',
-    icon: 'i-bx-link-external',
-    click: () => window.open(`/news/${row.key}`, '_blank')
-  }],
-  [{
-    label: 'Sửa thông tin',
-    icon: 'i-bx-pencil',
-    click: () => {
-      Object.keys(stateEdit.value).forEach(key => stateEdit.value[key] = row[key])
-      stateEdit.value.images = JSON.parse(JSON.stringify(row.images))
-      stateEdit.value.category = row.category._id
-      modal.value.edit = true
-    }
-  }, {
-    label: 'Sửa nội dung',
-    icon: 'i-bx-spreadsheet',
-    click: async () => {
-      try {
-        const content = await useAPI('admin/product/content/get', { _id: row._id })
-        stateContent.value._id = row._id
-        stateContent.value.content = content
-        modal.value.content = true
-      }
-      catch (e) {
-        return
-      }
-    }
-  }, {
-    label: 'Sửa giá tiền',
-    icon: 'solar:dollar-bold',
-    click: async () => {
-      try {
-        const price = await useAPI('admin/product/content/get', { _id: row._id })
-        modal.value.price = true
-      }
-      catch (e) {
-        return
-      }
-    }
-  }], [{
-    label: 'Xóa tin tức',
-    icon: 'i-bx-trash',
-    click: () => delAction(row._id)
-  }]
-]
+  [
+    {
+      label: "Xem trực tiếp",
+      icon: "i-bx-link-external",
+      click: () => window.open(`/news/${row.key}`, "_blank"),
+    },
+  ],
+  [
+    {
+      label: "Sửa thông tin",
+      icon: "i-bx-pencil",
+      click: () => {
+        Object.keys(stateEdit.value).forEach(
+          (key) => (stateEdit.value[key] = row[key])
+        );
+        stateEdit.value.images = JSON.parse(JSON.stringify(row.images));
+        stateEdit.value.category = row.category._id;
+        modal.value.edit = true;
+      },
+    },
+    {
+      label: "Sửa nội dung",
+      icon: "i-bx-spreadsheet",
+      click: async () => {
+        try {
+          const content = await useAPI("admin/product/content/get", {
+            _id: row._id,
+          });
+          stateContent.value._id = row._id;
+          stateContent.value.content = content;
+          modal.value.content = true;
+        } catch (e) {
+          return;
+        }
+      },
+    },
+    {
+      label: "Sửa giá tiền",
+      icon: "solar:dollar-bold",
+      click: async () => {
+        try {
+          options.value = [];
+          const data = await useAPI("admin/product/options/get", { _id: row._id });
+          
+          modal.value.price = true;
+          productId.value = row._id;
+          if (data.length > 0) {
+            options.value = data[0].options;
+          } else {
+            options.value = [{ price: row.price, number: 1 }];
+          }
+        } catch (e) {
+          return;
+        }
+      },
+    },
+  ],
+  [
+    {
+      label: "Xóa tin tức",
+      icon: "i-bx-trash",
+      click: () => delAction(row._id),
+    },
+  ],
+];
 
 // Fetch
 const getList = async () => {
   try {
-    loading.value.load = true
-    const data = await useAPI('admin/product/list', JSON.parse(JSON.stringify(page.value)))
+    loading.value.load = true;
+    const data = await useAPI(
+      "admin/product/list",
+      JSON.parse(JSON.stringify(page.value))
+    );
 
-    loading.value.load = false
-    list.value = data.list
-    page.value.total = data.total
+    loading.value.load = false;
+    list.value = data.list;
+    page.value.total = data.total;
+  } catch (e) {
+    loading.value.load = false;
   }
-  catch (e) {
-    loading.value.load = false
-  }
-}
+};
 
 const addAction = async () => {
   try {
-    loading.value.add = true
-    await useAPI('admin/product/add', JSON.parse(JSON.stringify(stateAdd.value)))
+    loading.value.add = true;
+    await useAPI(
+      "admin/product/add",
+      JSON.parse(JSON.stringify(stateAdd.value))
+    );
 
-    loading.value.add = false
-    modal.value.add = false
-    getList()
+    loading.value.add = false;
+    modal.value.add = false;
+    getList();
+  } catch (e) {
+    loading.value.add = false;
   }
-  catch (e) {
-    loading.value.add = false
-  }
-}
+};
 
 const editAction = async () => {
   try {
-    loading.value.edit = true
-    await useAPI('admin/product/edit', JSON.parse(JSON.stringify(stateEdit.value)))
+    loading.value.edit = true;
+    await useAPI(
+      "admin/product/edit",
+      JSON.parse(JSON.stringify(stateEdit.value))
+    );
 
-    loading.value.edit = false
-    modal.value.edit = false
-    getList()
+    loading.value.edit = false;
+    modal.value.edit = false;
+    getList();
+  } catch (e) {
+    loading.value.edit = false;
   }
-  catch (e) {
-    loading.value.edit = false
-  }
-}
+};
 
 const delAction = async (_id) => {
   try {
-    loading.value.del = true
-    await useAPI('admin/product/del', { _id })
+    loading.value.del = true;
+    await useAPI("admin/product/del", { _id });
 
-    loading.value.del = false
-    getList()
+    loading.value.del = false;
+    getList();
+  } catch (e) {
+    loading.value.del = false;
   }
-  catch (e) {
-    loading.value.del = false
-  }
-}
+};
 
 const contentAction = async () => {
   try {
-    loading.value.content = true
-    await useAPI('admin/product/content/edit', JSON.parse(JSON.stringify(stateContent.value)))
+    loading.value.content = true;
+    await useAPI(
+      "admin/product/content/edit",
+      JSON.parse(JSON.stringify(stateContent.value))
+    );
 
-    loading.value.content = false
-    modal.value.content = false
+    loading.value.content = false;
+    modal.value.content = false;
+  } catch (e) {
+    loading.value.content = false;
   }
-  catch (e) {
-    loading.value.content = false
-  }
-}
+};
 
-getList()
+const priceAction = async () => {
+  try {
+    loading.value.price = true;
+    await useAPI("admin/product/options/edit", { options: JSON.parse(JSON.stringify(options.value)), _id: productId.value });
+    loading.value.price = false;
+    modal.value.price = false;
+  } catch (e) {
+    loading.value.price = false;
+  }
+};
+getList();
 </script>

@@ -1,6 +1,6 @@
 import type { Model } from 'mongoose'
 import type { IDBCategory } from './category'
-import type { IDBProduct, IDBProductOption } from './product'
+import type { IDBProduct } from './product'
 export { IDBConfig, IDBConfigStore } from './config'
 export { IDBUser, IDBUserStore } from './user'
 export { IDBGate } from './gate'
@@ -14,7 +14,6 @@ export interface IGlobalDB {
   Gate: Model<IDBGate>
   Category: Model<IDBCategory>
   Product: Model<IDBProduct>
-  ProductOption: Model<IDBProductOption>
   
   LogAdmin: Model<IDBLogAdmin>
   LogUser: Model<IDBLogUser>

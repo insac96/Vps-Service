@@ -4,7 +4,7 @@
       <LayoutDefaultHeader />
     </header>
 
-    <nav class="shadow-md dark:shadow-xl">
+    <nav class="border-r order-gray-100 dark:border-gray-800">
       <LayoutDefaultNav />
     </nav>
 
@@ -20,7 +20,7 @@
 <style lang="sass">
 :root
   --layout-default-header-size: 3.5rem
-  --layout-default-nav-size: 200px
+  --layout-default-nav-size: 250px
 
 .LayoutDefault
   --layout-nav-reponsize: -100%

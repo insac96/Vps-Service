@@ -1,5 +1,5 @@
 import type { Mongoose } from 'mongoose'
-import { IDBProduct, IDBProductOption } from './../../../types/model/product.d';
+import { IDBProduct } from './../../../types/model/product.d';
 
 export const DBProduct = (mongoose : Mongoose) => {
     const schema = new mongoose.Schema<IDBProduct>({ 
@@ -8,9 +8,10 @@ export const DBProduct = (mongoose : Mongoose) => {
       content: { type: String },
       og_image: { type: String },
       images: { type: [String] },
-      view: { type: Number, default: 0 },
+      price: { type: Number, default: 0 },
       category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
       key: { type: String },
+      options:{type:Array },
       pin: { type: Number, default: 0 },
       display: { type: Boolean, default: true },
     }, {
@@ -23,14 +24,3 @@ export const DBProduct = (mongoose : Mongoose) => {
     return model 
   }
 
-  export const DBProductOption = (mongoose : Mongoose) => {
-    const schema = new mongoose.Schema<IDBProductOption>({ 
-      number: { type: Number },
-      price: { type: String },
-      product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
-    }, {
-      timestamps: true
-    })
-    const model = mongoose.model('ProductOption', schema, 'ProductOption')
-    return model 
-  }

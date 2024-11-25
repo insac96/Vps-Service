@@ -5,7 +5,7 @@ import { DBConfig } from './config'
 import { DBUser } from './user'
 import { DBLogAdmin, DBLogUser, DBLogLogin } from './log'
 import { DBGate } from './gate'
-import { DBProduct, DBProductOption } from './product'
+import { DBProduct } from './product'
 import { DBCategory } from './category'
 
 export default (mongoose : Mongoose) : IGlobalDB => {
@@ -17,7 +17,6 @@ export default (mongoose : Mongoose) : IGlobalDB => {
     Gate: DBGate(mongoose),
 
     Product: DBProduct(mongoose),
-    ProductOption: DBProductOption(mongoose),
     Category: DBCategory(mongoose),
 
     LogUser: DBLogUser(mongoose),
