@@ -69,11 +69,7 @@
         <UFormGroup label="Tên sản phẩm">
           <UInput v-model="stateAdd.name" />
         </UFormGroup>
-
-        <UFormGroup label="Giá sản phẩm">
-          <UInput v-model="stateAdd.price" />
-        </UFormGroup>
-
+        
         <UFormGroup label="Mô tả">
           <UTextarea v-model="stateAdd.description" autoresize />
         </UFormGroup>
@@ -113,10 +109,6 @@
           <UInput v-model="stateEdit.name" />
         </UFormGroup>
 
-        <UFormGroup label="Giá sản phẩm">
-          <UInput v-model="stateEdit.price" />
-        </UFormGroup>
-
         <UFormGroup label="Mô tả">
           <UTextarea v-model="stateEdit.description" autoresize />
         </UFormGroup>
@@ -139,7 +131,6 @@
 
         <UiFlex class="mt-6">
           <SelectPin v-model="stateEdit.pin" class="mr-auto" />
-
           <UButton type="submit" :loading="loading.edit">Sửa</UButton>
           <UButton color="gray" @click="modal.edit = false" :disabled="loading.edit" class="ml-1">Đóng</UButton>
         </UiFlex>
@@ -202,11 +193,6 @@ const columns = [
     label: "Danh mục",
   },
   {
-    key: "price",
-    label: "Giá sản phẩm",
-    sortable: true,
-  },
-  {
     key: "pin",
     label: "Ghim",
     sortable: true,
@@ -238,22 +224,10 @@ const page = ref({
   },
   total: 0,
 });
-watch(
-  () => page.value.size,
-  () => getList()
-);
-watch(
-  () => page.value.current,
-  () => getList()
-);
-watch(
-  () => page.value.sort.column,
-  () => getList()
-);
-watch(
-  () => page.value.sort.direction,
-  () => getList()
-);
+watch(() => page.value.size,() => getList());
+watch(() => page.value.current,() => getList());
+watch(() => page.value.sort.column,() => getList());
+watch(() => page.value.sort.direction,() => getList());
 
 // State
 const stateAdd = ref({
@@ -262,7 +236,6 @@ const stateAdd = ref({
   description: null,
   og_image: null,
   images: [],
-  price: undefined,
   pin: false,
   display: true,
 });
@@ -272,7 +245,6 @@ const stateEdit = ref({
   name: null,
   description: null,
   og_image: null,
-  price: undefined,
   images: [],
   pin: null,
   display: null,
@@ -329,7 +301,7 @@ const actions = (row) => [
     {
       label: "Xem trực tiếp",
       icon: "i-bx-link-external",
-      click: () => window.open(`/news/${row.key}`, "_blank"),
+      click: () => window.open(`/product/${row.key}`, "_blank"),
     },
   ],
   [
@@ -350,9 +322,7 @@ const actions = (row) => [
       icon: "i-bx-spreadsheet",
       click: async () => {
         try {
-          const content = await useAPI("admin/product/content/get", {
-            _id: row._id,
-          });
+          const content = await useAPI("admin/product/content/get", {_id: row._id,});
           stateContent.value._id = row._id;
           stateContent.value.content = content;
           modal.value.content = true;
@@ -366,16 +336,9 @@ const actions = (row) => [
       icon: "solar:dollar-bold",
       click: async () => {
         try {
-          options.value = [];
-          const data = await useAPI("admin/product/options/get", { _id: row._id });
-          
+          options.value = row.options.length > 0 ? row.options : [{ price: row.price, number: 1 }];
           modal.value.price = true;
           productId.value = row._id;
-          if (data.length > 0) {
-            options.value = data[0].options;
-          } else {
-            options.value = [{ price: row.price, number: 1 }];
-          }
         } catch (e) {
           return;
         }
@@ -384,7 +347,7 @@ const actions = (row) => [
   ],
   [
     {
-      label: "Xóa tin tức",
+      label: "Xóa sản phẩm",
       icon: "i-bx-trash",
       click: () => delAction(row._id),
     },

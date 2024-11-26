@@ -15,7 +15,7 @@
   ">
     <NuxtImg 
       :src="useMakeLink().img(src)" 
-      class="object-cover w-full h-full select-none" 
+      class=" w-full h-full select-none" 
       :sizes="props.sizes" 
       :width="props.imgW"
       :height="props.imgH"
@@ -24,7 +24,7 @@
       :fit="fit" 
       :loading="!!preload ? 'eager' : 'lazy'"
       :preload="preload"
-      placeholder="/images/placeholder.png"
+      placeholder="/images/null.webp"
       :alt="props.alt"
       @load="onLoad" 
     />

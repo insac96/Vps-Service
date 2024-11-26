@@ -3,7 +3,6 @@
     'UiEditor ring-1 ring-gray-200 dark:ring-gray-800 rounded-xl' : !loading
   }">
     <USkeleton class="w-full h-[250px] rounded-xl shadow-md" v-if="loading" />
-
     <ClientOnly>
       <QuillEditor 
         :content="content" 

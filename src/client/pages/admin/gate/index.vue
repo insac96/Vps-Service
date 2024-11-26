@@ -254,7 +254,7 @@ const actions = (row) => [
 const getList = async () => {
   try {
     loading.value.load = true
-    const data = await useAPI('gate/admin/list', JSON.parse(JSON.stringify(page.value)))
+    const data = await useAPI('admin/gate/list', JSON.parse(JSON.stringify(page.value)))
 
     loading.value.load = false
     list.value = data.list
@@ -268,7 +268,7 @@ const getList = async () => {
 const addAction = async () => {
   try {
     loading.value.add = true
-    await useAPI('gate/admin/add', JSON.parse(JSON.stringify(stateAdd.value)))
+    await useAPI('admin/gate/add', JSON.parse(JSON.stringify(stateAdd.value)))
 
     loading.value.add = false
     modal.value.add = false
@@ -282,7 +282,7 @@ const addAction = async () => {
 const editAction = async () => {
   try {
     loading.value.edit = true
-    await useAPI('gate/admin/edit', JSON.parse(JSON.stringify(stateEdit.value)))
+    await useAPI('admin/gate/edit', JSON.parse(JSON.stringify(stateEdit.value)))
 
     loading.value.edit = false
     modal.value.edit = false
@@ -296,7 +296,7 @@ const editAction = async () => {
 const extendAction = async () => {
   try {
     loading.value.extend = true
-    await useAPI('gate/admin/extend', JSON.parse(JSON.stringify(stateExtend.value)))
+    await useAPI('admin/gate/extend', JSON.parse(JSON.stringify(stateExtend.value)))
 
     loading.value.extend = false
     modal.value.extend = false
@@ -310,7 +310,7 @@ const extendAction = async () => {
 const delAction = async (_id) => {
   try {
     loading.value.del = true
-    await useAPI('gate/admin/del', { _id })
+    await useAPI('admin/gate/del', { _id })
 
     loading.value.del = false
     getList()

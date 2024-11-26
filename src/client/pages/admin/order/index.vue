@@ -145,8 +145,8 @@ const columns = [
     key: 'gate',
     label: 'Kênh',
   },{
-    key: 'game',
-    label: 'Trò chơi',
+    key: 'product',
+    label: 'Sản phẩm',
   },{
     key: 'money',
     label: 'Số tiền',
@@ -287,8 +287,7 @@ const viewGame = (key) => {
 const getList = async () => {
   try {
     loading.value.load = true
-    const data = await useAPI('order/admin/list', JSON.parse(JSON.stringify(page.value)))
-
+    const data = await useAPI('admin/order/list', JSON.parse(JSON.stringify(page.value)))
     loading.value.load = false
     list.value = data.list
     page.value.total = data.total
@@ -301,7 +300,7 @@ const getList = async () => {
 const successAction = async () => {
   try {
     loading.value.success = true
-    await useAPI('order/admin/verify', JSON.parse(JSON.stringify(stateSuccess.value)))
+    await useAPI('admin/order/verify', JSON.parse(JSON.stringify(stateSuccess.value)))
 
     loading.value.success = false
     modal.value.success = false
@@ -315,7 +314,7 @@ const successAction = async () => {
 const refuseAction = async () => {
   try {
     loading.value.refuse = true
-    await useAPI('order/admin/verify', JSON.parse(JSON.stringify(stateRefuse.value)))
+    await useAPI('admin/order/verify', JSON.parse(JSON.stringify(stateRefuse.value)))
 
     loading.value.refuse = false
     modal.value.refuse = false
@@ -329,7 +328,7 @@ const refuseAction = async () => {
 const waitingAction = async () => {
   try {
     loading.value.waiting = true
-    await useAPI('order/admin/verify', JSON.parse(JSON.stringify(stateWaiting.value)))
+    await useAPI('admin/order/verify', JSON.parse(JSON.stringify(stateWaiting.value)))
 
     loading.value.waiting = false
     modal.value.waiting = false

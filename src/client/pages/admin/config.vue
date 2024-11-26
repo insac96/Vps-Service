@@ -320,7 +320,7 @@ const menu = [
 ]
 
 const getConfig = async () => {
-  const config = await useAPI('config/admin/get')
+  const config = await useAPI('admin/config/get')
   state.value = Object.assign(state.value, config)
   load.value = false
 }
@@ -329,8 +329,7 @@ const update = async (change) => {
   try {
     updating.value = true
     state.value.change = change
-
-    await useAPI('config/admin/update', JSON.parse(JSON.stringify(state.value)))
+    await useAPI('admin/config/update', JSON.parse(JSON.stringify(state.value)))
     bootConfig()
     getConfig()
     updating.value = false
@@ -339,6 +338,5 @@ const update = async (change) => {
     updating.value = false
   }
 }
-
 getConfig()
 </script>

@@ -8,7 +8,6 @@ export const DBProduct = (mongoose : Mongoose) => {
       content: { type: String },
       og_image: { type: String },
       images: { type: [String] },
-      price: { type: Number, default: 0 },
       category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
       key: { type: String },
       options:{type:Array },

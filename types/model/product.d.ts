@@ -11,7 +11,6 @@ export interface IDBProduct {
   content: string
   og_image: string
   key: string
-  price: number
   images: string[]
   options:Array
   pin: number

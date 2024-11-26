@@ -1,5 +1,6 @@
 
 <template>
+  <USkeleton class="relative h-[360px] mb-3 rounded-2xl " v-if="loading"/>
   <div v-if="banner" class="
     ServiceHomeBanner 
     relative 
@@ -17,7 +18,6 @@
       "
       ratio="16 / 9"
     />
-
     <!-- Overlay -->
     <div class="
       absolute 
@@ -26,7 +26,6 @@
       bg-black/50
       dark:bg-black/60
     "></div>
-
     <!-- Content -->
     <UiFlex 
       type="col" 
@@ -35,7 +34,7 @@
       class="
         relative
         w-full h-full 
-        p-20
+        md:p-20 p-4
         aspect-auto
       "
     >
@@ -53,14 +52,14 @@
         weight="semibold" 
         class="xl:text-2xl md:text-xl text-base text-gray-300 md:max-w-xl"
       >
-        {{ banner.config.description || 'Kênh bán game uy tín số 1 Việt Nam' }}
+        {{ banner.config.description || 'Kênh bán VPS giá rẻ và chất lượng tốt nhất' }}
       </UiText>
       
       <!-- Statical -->
       <UiFlex class="mt-6 gap-8 text-gray-300" wrap>
         <div>
-          <UiText size="sm">Trò chơi</UiText>
-          <UiText size="xl" weight="bold">{{ banner.game }}</UiText>
+          <UiText size="sm">Sản phẩm</UiText>
+          <UiText size="xl" weight="bold">{{ banner.product }}</UiText>
         </div>
 
         <div>
@@ -72,10 +71,6 @@
           <UiText size="sm">Đơn hàng</UiText>
           <UiText size="xl" weight="bold">{{ banner.order }}</UiText>
         </div>
-        <!-- <div>
-          <UiText size="sm">Trực tuyến</UiText>
-          <UiText size="xl" weight="bold">{{ 149 }}</UiText>
-        </div> -->
       </UiFlex>
       <!-- About -->
       <UButton class="mt-6" size="md">Xem Thêm</UButton>
@@ -85,14 +80,15 @@
 
 <script setup>
 const banner = ref(undefined)
-
+const loading = ref(true)
 const getBanner = async () => {
   try {
-    const data = await useAPI('config/banner')
-    console.log(data);
+    const data = await useAPI('client/config/banner')
+    loading.value = false
     banner.value = data
   }
   catch (e){
+    loading.value = false
   }
 }
 

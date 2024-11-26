@@ -1,7 +1,6 @@
 <template>
-  <div>
-    Tài khoản
-  </div>
+  <UiContent title="Account" sub="Thông tin tài khoản">
+  </UiContent>
 </template>
 
 <script lang="ts" setup>

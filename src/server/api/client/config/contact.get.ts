@@ -1,4 +1,4 @@
-import resp from "../../utils/resp"
+import resp from "../../../utils/resp"
 export default defineEventHandler(async (event) => {
   try {
     const config = await DB.Config.findOne().select('social contact') 

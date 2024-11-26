@@ -2,9 +2,8 @@
   <div>
     <!-- Banner -->
     <LayoutDefaultBanner class="mb-4" />
-
     <!--Product-->
-    <!-- <ServiceNewsList title="Tin Tức Mới" class="mb-20" /> -->
+    <ServiceProductPopular title="Sản phẩm nổi bật" class="mb-20" />
   </div>
 </template>
 

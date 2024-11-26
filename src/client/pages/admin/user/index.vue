@@ -38,8 +38,8 @@
         </template>
 
         <template #type-data="{ row }">
-          <UBadge :color="typeFormat[row.type].color" variant="soft">
-            {{ typeFormat[row.type].label }}
+          <UBadge :color="typeFormat[row.type]?.color" variant="soft">
+            {{ typeFormat[row.type]?.label }}
           </UBadge>
         </template>
 
@@ -181,9 +181,7 @@ const loading = ref({
 // Type
 const typeFormat = {
   0: { label: 'MEMBER', color: 'gray' },
-  1: { label: 'SMOD', color: 'green' },
-  2: { label: 'ADMIN', color: 'red' },
-  99: { label: 'BOT', color: 'orange' }
+  100: { label: 'ADMIN', color: 'red' },
 }
 
 const viewUser = (_id) => {
@@ -208,7 +206,6 @@ const getList = async () => {
   try {
     loading.value.load = true
     const data = await useAPI('admin/user/list', JSON.parse(JSON.stringify(page.value)))
-
     loading.value.load = false
     list.value = data.list
     page.value.total = data.total

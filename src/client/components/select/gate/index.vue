@@ -9,7 +9,7 @@
     :loading="loading"
   >
     <template #label>
-      <UiText mini>{{ select ? select.name : 'Chọn kênh nạp' }}</UiText>
+      <UiText mini>{{ select ? select.name : 'Chọn Ngân hàng' }}</UiText>
     </template>
   </USelectMenu>
 </template>
@@ -42,7 +42,7 @@ const select = computed(() => options.value.find(i => i._id === gate.value))
 const fetch = async () => {
   try {
     loading.value = true
-    const list = await useAPI('gate/select')
+    const list = await useAPI('client/gate/select')
 
     options.value = options.value.concat(list)
     loading.value = false

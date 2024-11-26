@@ -32,6 +32,7 @@
       <template #tab-1><UVerticalNavigation :links="navItems[1].children" @click="emit('to')"/></template>
       <template #tab-2><UVerticalNavigation :links="navItems[2].children" @click="emit('to')"/></template>
       <template #tab-3><UVerticalNavigation :links="navItems[3].children" @click="emit('to')"/></template>
+      <template #tab-4><UVerticalNavigation :links="navItems[4].children" @click="emit('to')"/></template>
     </UAccordion>
   </div>
 </template>
@@ -45,7 +46,7 @@ const navItems = [
     defaultOpen: true,
     slot: 'tab-0',
     children: [
-      { label: 'Chi tiêu', to: '/admin/spend' },
+      { label: 'Thống kê', to: '/admin/statistic' },
       { label: 'Kênh thanh toán', to: '/admin/gate' }, 
       { label: 'Đơn hàng', to: '/admin/order' }, 
       { label: 'Cài đặt', to: '/admin/config' },
@@ -68,6 +69,15 @@ const navItems = [
     slot: 'tab-2',
     children: [
       { label: 'Danh sách', to: '/admin/user' }, 
+    ]
+  },
+  {
+    label: 'Nhật ký',
+    icon: 'i-bx-history',
+    defaultOpen: true,
+    slot: 'tab-3',
+    children: [
+      { label: 'Admin log', to: '/admin/logs' }, 
     ]
   },
 ]

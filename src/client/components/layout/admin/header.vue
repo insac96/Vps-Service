@@ -7,13 +7,11 @@
   ">
     <UiFlex justify="between" class="h-[var(--header-size)] max-h-[var(--header-size)]">
       <LayoutAdminNavSlide class="w-1/3"/>
-      
       <UiFlex class="w-1/3 xl:justify-start justify-center">
-        <NuxtLink to="/admin">
+        <NuxtLink to="/admin/statistic">
           <UiLogo />
         </NuxtLink>
       </UiFlex>
-      
       <UiFlex justify="end" items="center" class="w-1/3">
         <Auth />
       </UiFlex>

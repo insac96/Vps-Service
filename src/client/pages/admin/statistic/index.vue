@@ -1,6 +1,7 @@
 <template>
-  <UiContent title="Order" sub="Danh sách đơn hàng">
-  </UiContent>
+  <div>
+      thong ke
+  </div>
 </template>
 
 <script lang="ts" setup>

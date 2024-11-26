@@ -24,7 +24,6 @@ export default defineEventHandler(async (event) => {
       if(search.by == 'MAIL') match['email'] = { $regex : search.key.toLowerCase(), $options : 'i' }
       if(search.by == 'PHONE') match['phone'] = { $regex : search.key, $options : 'i' }
     }
-
     const list = await DB.User
     .aggregate([
       { $match: match },

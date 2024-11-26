@@ -37,7 +37,7 @@ const menu = computed(() => {
       label: 'Quản trị viên',
       icon: 'i-eos-icons-admin',
       disabled: authStore.profile?.type < 1 ? true : false,
-      click: () => navigateTo('/admin/config')
+      click: () => navigateTo('/admin/statistic')
     }])
   }
 
