@@ -24,7 +24,7 @@
         </template>
 
         <template #user-data="{ row }">
-          <UBadge variant="soft" color="gray" class="cursor-pointer" @click="viewUser(row.user._id)">
+          <UBadge variant="soft" color="gray" class="cursor-pointer" >
             {{ row.user.username }}
           </UBadge>
         </template>
@@ -35,12 +35,15 @@
           </UBadge>
         </template>
 
-        <template #game-data="{ row }">
-          <UBadge variant="soft" color="gray" class="cursor-pointer" @click="viewGame(row.game.key)">Xem</UBadge>
+        <template #product-data="{ row }">
+          <UBadge variant="soft" color="gray" class="cursor-pointer" @click="viewProduct(row.product.key)">Xem</UBadge>
         </template>
 
         <template #money-data="{ row }">
           <UiText weight="semibold">{{ toMoney(row.money) }}</UiText>
+        </template>
+        <template #number-data="{ row }">
+          <UiText weight="semibold">{{ row.number }} Tháng</UiText>
         </template>
 
         <template #status-data="{ row }">
@@ -51,7 +54,7 @@
 
         <template #verify_person-data="{ row }">
           <span v-if="!row.verify_person">...</span>
-          <UBadge v-else variant="soft" color="gray" class="cursor-pointer" @click="viewUser(row.verify_person._id)">
+          <UBadge v-else variant="soft" color="gray" class="cursor-pointer" >
             {{ row.verify_person.username }}
           </UBadge>
         </template>
@@ -150,6 +153,10 @@ const columns = [
   },{
     key: 'money',
     label: 'Số tiền',
+    sortable: true
+  },{
+    key: 'number',
+    label: 'Thời gian thuê',
     sortable: true
   },{
     key: 'status',
@@ -269,18 +276,15 @@ const actions = (row) => [
   }]
 ]
 
-const viewUser = (_id) => {
-  stateUser.value = _id
-  modal.value.user = true
-}
+  
 
 const viewOrder = (_id) => {
   stateOrder.value = _id
   modal.value.order = true
 }
 
-const viewGame = (key) => {
-  window.open(`/game/${key}`, '_blank')
+const viewProduct = (key) => {
+  window.open(`/product/${key}`, '_blank')
 }
  
 // Fetch

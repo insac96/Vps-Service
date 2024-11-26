@@ -67,7 +67,7 @@ const startCopy = (text) => {
 
 const fetch = async () => {
   try {
-    const data = await useAPI('order/get', { 
+    const data = await useAPI('admin/order/get', { 
       _id: props.fetchId
     })
     loading.value = false

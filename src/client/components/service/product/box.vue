@@ -11,11 +11,11 @@
       />
     </div>
 
-    <div class="lg:p-4 p-2 lg:pt-2 pt-1">
+    <div class="lg:p-4 p-2 lg:pt-2">
       <NuxtLink :to="`/product/${product.key}`" class="lg:text-lg md:text-md text-sm line-clamp-2 text-gray hover:text-primary">
-        {{ product.title }}
+        {{ product.name }}
       </NuxtLink>
-      <UiText class="line-clamp-2 lg:text-md md:text-sm text-xs" color="gray">{{ product.name }}</UiText>
+      <UiText class="line-clamp-2 lg:text-md md:text-sm text-xs" color="gray">{{ product.description }}</UiText>
     </div>
 
     <template #footer>
@@ -23,7 +23,7 @@
         <UiFlex class="gap-1">
           <UButton size="xs" @click="navigateTo(`/product/${product.key}`)" icon="i-ion-eye" color="primary">Xem chi tiết</UButton>
         </UiFlex>
-        <UBadge color="gray" class="cursor-pointer">{{ product.category.name }}</UBadge>
+        <UBadge color="gray" class="cursor-pointer hidden lg:block md:block">{{ product.category.name }}</UBadge>
       </UiFlex>
     </template>
   </UCard>

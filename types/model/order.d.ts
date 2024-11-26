@@ -13,11 +13,10 @@ export interface IDBOrder {
   product: Types.ObjectId | IDBProduct
 
   money: number
+  number:number
 
   code: string
   token: string
-
-  qrcode: string
 
   status: number
   

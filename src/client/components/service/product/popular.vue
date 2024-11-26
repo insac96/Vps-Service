@@ -1,6 +1,6 @@
 <template>
     <div>
-      <UiFlex class="gap-2 mb-6">
+      <UiFlex class="gap-2 my-5">
         <UiIcon color="primary" name="icon-park-outline:ad-product" size="8" />
         <UiText :text="title" weight="semibold" size="lg" />
         <UButton size="xs" color="gray" class="ml-auto" v-if="!!list && list.length < page.total">Xem Thêm</UButton>
