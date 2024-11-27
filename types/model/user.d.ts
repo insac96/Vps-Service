@@ -1,5 +1,4 @@
 import type { Types } from 'mongoose'
-import type { IDBGate } from './gate'
 
 export interface IDBUser {
   _id: Types.ObjectId
@@ -11,13 +10,9 @@ export interface IDBUser {
   email: string
   phone: string
   avatar: string
-  
-  social: {
-    facebook: string
-    zalo: string
-    tiktok: string
-    telegram: string
-  }
+  cccd: string
+  address: string
+
   type: number
   block: boolean
   token: string
@@ -28,6 +23,17 @@ export interface IDBUser {
   }
 }
 
+export interface IDBUserTax {
+  _id: Types.ObjectId
+  user: Types.ObjectId
+  createdAt: Date
+  updatedAt: Date
+  name: string
+  tax_code: string
+  email: string
+  address: string
+}
+
 
 export interface IDBUserStore {
   _id? : Types.ObjectId
@@ -36,10 +42,7 @@ export interface IDBUserStore {
   phone?: string
   avatar?: string
   type?: number
-  social?: {
-    facebook: string
-    zalo: string
-    tiktok: string
-    telegram: string
-  },
+  block?: boolean
+  cccd?: string
+  address: string
 }

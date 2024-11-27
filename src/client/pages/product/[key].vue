@@ -55,6 +55,23 @@
           <SelectGate v-model="state.gateId" />
           <div v-if="gate && state.option && state.gateId" class="border border-gray-200 dark:border-gray-800 rounded-lg p-4 mt-4">
             <UiFlex justify="between" class="my-4">
+              <UiText size="sm" color="gray" weight="semibold">Tên sản phẩm</UiText>
+              <span class="clamp-1 max-w-[150px] md:max-w-[250px] overflow-hidden whitespace-nowrap text-ellipsis break-words text-sm font-semibold">{{product.name || "..."}}</span>
+            </UiFlex>
+            <UiFlex justify="between" class="my-4">
+              <UiText size="sm" color="gray" weight="semibold">Thời gian thuê</UiText>
+              <UiText size="sm" weight="semibold">{{state.option.number || "..."}} Tháng</UiText>
+            </UiFlex>
+            <UiFlex justify="between" class="mb-4">
+              <UiText size="sm" color="gray" weight="semibold" mini>Tổng số tiền</UiText>
+              <UiFlex @click="startCopy(state.option.price)">
+                <UiText size="sm" weight="semibold" align="right" class="ml-4" pointer>
+                  {{ useMoney().toMoney(state.option.price) }}
+                </UiText>
+                <UiIcon name="i-bx-copy-alt" color="primary" class="ml-2" pointer />
+              </UiFlex>
+            </UiFlex>
+            <UiFlex justify="between" class="my-4 border-t pt-4 border-gray-200 dark:border-gray-800">
               <UiText size="sm" color="gray" weight="semibold">Ngân hàng</UiText>
               <UiText size="sm" weight="semibold">{{gate.name || "..."}}</UiText>
             </UiFlex>
@@ -71,15 +88,7 @@
                 <UiIcon name="i-bx-copy-alt" color="primary" class="ml-2" pointer />
               </UiFlex>
             </UiFlex>
-            <UiFlex justify="between" class="mb-4">
-              <UiText size="sm" color="gray" weight="semibold" mini>Tổng số tiền</UiText>
-              <UiFlex @click="startCopy(state.option.price)">
-                <UiText size="sm" weight="semibold" align="right" class="ml-4" pointer>
-                  {{ useMoney().toMoney(state.option.price) }}
-                </UiText>
-                <UiIcon name="i-bx-copy-alt" color="primary" class="ml-2" pointer />
-              </UiFlex>
-            </UiFlex>
+            
           </div>
         </UFormGroup>
         <UiFlex justify="end" class="mt-6">

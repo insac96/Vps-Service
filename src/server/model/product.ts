@@ -4,13 +4,12 @@ import { IDBProduct } from './../../../types/model/product.d';
 export const DBProduct = (mongoose : Mongoose) => {
     const schema = new mongoose.Schema<IDBProduct>({ 
       name: { type: String },
-      description: { type: String },
-      content: { type: String },
+      specs: { type: Array },
       og_image: { type: String },
       images: { type: [String] },
       category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
       key: { type: String },
-      options:{type:Array },
+      options:{type: Array },
       pin: { type: Number, default: 0 },
       display: { type: Boolean, default: true },
     }, {

@@ -5,6 +5,7 @@ export const DBCategory = (mongoose : Mongoose) => {
     const schema = new mongoose.Schema<IDBCategory>({ 
       name: { type: String },
       key: { type: String },
+      image: { type: String },
       color: { type: String, default: 'primary' }
     }, {
       timestamps: true

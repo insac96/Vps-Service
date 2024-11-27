@@ -44,13 +44,13 @@ const menu = computed(() => {
   list.push([{
     label: 'Tài khoản',
     icon: 'i-bx-user',
-    click: () => navigateTo('/user')
+    click: () => navigateTo('/account')
   }])
 
   list.push([{
     label: 'Đơn hàng',
     icon: 'i-bx-history',
-    click: () => modal.value.order = true
+    click: () => navigateTo('/order')
   },{
     label: 'Đăng xuất',
     icon: 'i-bx-log-in',

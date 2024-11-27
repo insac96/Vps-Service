@@ -16,7 +16,6 @@ export default defineEventHandler(async (event) => {
     .select('username email phone type block') as IDBUser
 
     if(!user) throw 'Người dùng không tồn tại'
-    if(user.type == 2 && auth.type < 2) throw 'Smod không thể sửa thông tin của Admin'
 
     const update : any = { type: type, block: block }
     const change = []

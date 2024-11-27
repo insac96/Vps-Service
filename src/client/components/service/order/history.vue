@@ -1,18 +1,16 @@
 <template>
   <div>
-    <UCard :ui="{ 
+    <UCard :ui="{
       body: { padding: 'p-0 sm:p-0' },
       header: { padding: 'px-3 sm:px-3 py-2 sm:py-2' },
       footer: { padding: 'p-2 sm:p-2' },
     }">
       <template #header>
         <UiFlex>
-          <USelectMenu v-model="page.size" :options="[5,10,20,50,100]" class="mr-1" />
-
+          <USelectMenu v-model="page.size" :options="[5, 10, 20, 50, 100]" class="mr-1" />
           <UForm @submit="getList" class="max-w-[9rem] ml-auto">
             <UInput v-model="page.search.key" placeholder="Tìm kiếm..." icon="i-bx-search" size="sm"></UInput>
           </UForm>
-          
           <!-- <SelectDate time v-model="page.range.start" placeholder="Bắt đầu" size="sm" class="ml-1 max-w-[140px]"/>
           <SelectDate time v-model="page.range.end" placeholder="Kết thúc" size="sm" class="ml-1 max-w-[140px]"/> -->
         </UiFlex>
@@ -29,12 +27,19 @@
           <UBadge variant="soft" color="gray">{{ row.gate.name }}</UBadge>
         </template>
 
-        <template #game-data="{ row }">
-          <UBadge variant="soft" color="gray" class="cursor-pointer" @click="viewGame(row.game.key)">Xem</UBadge>
+        <template #product-data="{ row }">
+          <UBadge variant="soft" color="gray" class="cursor-pointer" @click="viewProduct(row.product.key)">Xem</UBadge>
         </template>
 
         <template #money-data="{ row }">
           <UiText weight="semibold">{{ toMoney(row.money) }}</UiText>
+        </template>
+        <template #number-data="{ row }">
+          <UiText weight="semibold">{{ row.number }} Tháng</UiText>
+        </template>
+        
+        <template #end_time-data="{ row }">
+          {{ row.status == 1 ? useDayJs().displayFull(row.end_time) : '...' }}
         </template>
 
         <template #status-data="{ row }">
@@ -49,7 +54,7 @@
 
         <template #action-data="{ row }">
           <UButton v-if="row.status == 0" color="gray" size="xs" @click="openUndo(row)">Hủy</UButton>
-          <UButton v-if="row.status == 1" size="xs" @click="downloadAction(row)">Tải Game</UButton>
+          <span v-if="row.status == 1">...</span>
           <span v-if="row.status == 2">...</span>
         </template>
       </UTable>
@@ -63,7 +68,7 @@
 
     <!-- Modal View -->
     <UModal v-model="modal.order" prevent-close>
-      <ServiceOrderView :fetch-id="stateOrder" class="p-4"/>
+      <ServiceOrderView :fetch-id="stateOrder" class="p-4" />
 
       <UiFlex justify="end" class="px-4 pb-4">
         <UButton color="gray" @click="modal.order = false">Đóng</UButton>
@@ -113,23 +118,36 @@ const columns = [
   {
     key: 'code',
     label: 'Mã',
-  },{
+  }, {
     key: 'gate',
     label: 'Kênh',
-  },{
-    key: 'game',
-    label: 'Trò chơi',
-  },{
-    key: 'money',
-    label: 'Số tiền',
+  }, {
+    key: 'product',
+    label: 'Sản phẩm',
+  }, {
+    key: 'number',
+    label: 'Thời gian thuê',
+  }, {
+    key: 'end_time',
+    label: 'Thời kết thúc',
     sortable: true
-  },{
+  }, {
     key: 'status',
     label: 'Trạng thái',
     sortable: true
-  },{
+  }, {
+    key: 'money',
+    label: 'Tổng tiền',
+    sortable: true
+  }, {
+    key: 'createdAt',
+    label: 'Thời gian tạo',
+    sortable: true
+  },
+
+  {
     key: 'action',
-    label: 'Chức năng',
+    label: 'Hành động',
   }
 ]
 
@@ -158,12 +176,12 @@ watch(() => page.value.sort.column, () => getList())
 watch(() => page.value.sort.direction, () => getList())
 watch(() => page.value.search.key, (val) => !val && getList())
 watch(() => page.value.range.start, (val) => {
-  if(!!val && !!page.value.range.end) return getList()
-  if(!val && !page.value.range.end) return getList()
+  if (!!val && !!page.value.range.end) return getList()
+  if (!val && !page.value.range.end) return getList()
 })
 watch(() => page.value.range.end, (val) => {
-  if(!!val && !!page.value.range.start) return getList()
-  if(!val && !page.value.range.start) return getList()
+  if (!!val && !!page.value.range.start) return getList()
+  if (!val && !page.value.range.start) return getList()
 })
 
 const statusFormat = {
@@ -190,29 +208,14 @@ const viewOrder = (_id) => {
   modal.value.order = true
 }
 
-const viewGame = (key) => {
-  window.open(`/game/${key}`, '_blank')
-}
-
-const downloadAction = async (row) => {
-  try {
-    loading.value.download = true
-    const link = await useAPI('game/download', {
-      game: row.game._id
-    })
-
-    loading.value.download = false
-    window.open(link, '_blank')
-  }
-  catch (e) {
-    loading.value.download = false
-  }
+const viewProduct = (key) => {
+  window.open(`/product/${key}`, '_blank')
 }
 
 const undoAction = async () => {
   try {
     loading.value.undo = true
-    await useAPI('order/undo', JSON.parse(JSON.stringify(stateUndo.value)))
+    await useAPI('client/order/undo', JSON.parse(JSON.stringify(stateUndo.value)))
 
     loading.value.undo = false
     modal.value.undo = false
@@ -226,15 +229,14 @@ const undoAction = async () => {
 const getList = async () => {
   try {
     loading.value.load = true
-    const data = await useAPI('order/history', JSON.parse(JSON.stringify(page.value)))
-
+    const data = await useAPI('client/order/history', JSON.parse(JSON.stringify(page.value)))
     loading.value.load = false
     list.value = data.list
     page.value.total = data.total
   }
   catch (e) {
     loading.value.load = false
-  } 
+  }
 }
 
 getList()

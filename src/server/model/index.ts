@@ -2,7 +2,7 @@ import type { Mongoose } from 'mongoose'
 import type { IGlobalDB } from '~~/types'
 
 import { DBConfig } from './config'
-import { DBUser } from './user'
+import { DBUser, DBUserTax } from './user'
 import { DBLogAdmin, DBLogUser, DBLogLogin } from './log'
 import { DBGate } from './gate'
 import { DBProduct } from './product'
@@ -14,6 +14,7 @@ export default (mongoose : Mongoose) : IGlobalDB => {
     Config: DBConfig(mongoose),
     Gate: DBGate(mongoose),
     User: DBUser(mongoose),
+    UserTax: DBUserTax(mongoose),
     Product: DBProduct(mongoose),
     Category: DBCategory(mongoose),
     Order: DBOrder(mongoose),

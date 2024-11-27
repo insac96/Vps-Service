@@ -17,7 +17,7 @@ export interface IDBOrder {
 
   code: string
   token: string
-
+  end_time: Date
   status: number
   
   verify: {

@@ -3,14 +3,14 @@ import type { IAuth, IDBUser } from "~~/types"
 export default defineEventHandler(async (event) => {
   try {
     const auth = await getAuth(event) as IAuth
-    if(auth.type < 1) throw 'Bạn không phải quản trị viên'
+    if(!auth) throw 'Vui lòng đăng nhập'
 
     const data = await readBody(event)
-    const { email, phone, avatar, social } = data
+    const {username, email, phone, address, cccd  } = data
 
     const user = await DB.User
     .findOne({ _id: auth._id }) 
-    .select('email phone avatar social') as IDBUser
+    .select('email phone username address cccd') as IDBUser
 
     if(!!user.email && user.email != email) throw 'Không thể cập nhật lại Email'
     if(!!user.phone && user.phone != phone) throw 'Không thể cập nhật lại Số Điên Thoại'
@@ -28,15 +28,11 @@ export default defineEventHandler(async (event) => {
     
     // Update
     await DB.User.updateOne({ _id: auth._id }, {
+      username: username ? username.toString() : '',
       email: email ? email.toString() : '',
       phone: phone ? phone.toString() : '',
-      avatar: avatar ? avatar.toString() : '/images/user/default.png',
-      social: {
-        facebook: social.facebook ? social.facebook.toString() : '',
-        zalo: social.zalo ? social.zalo.toString() : '',
-        tiktok: social.tiktok ? social.tiktok.toString() : '',
-        telegram: social.telegram ? social.telegram.toString() : ''
-      }
+      cccd: cccd ? cccd.toString() : '',
+      address: address ? address.toString() : '',
     })
     return resp(event, { message: 'Cập nhật thành công' })
   } 

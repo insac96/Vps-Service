@@ -30,6 +30,7 @@ export default defineEventHandler(async (event) => {
           color:1,
           updatedAt: 1,
           createdAt: 1,
+          image:1,
           count: { 
             $size: '$productList'
           }

@@ -7,12 +7,11 @@ export interface IDBProduct {
   name: string
   number: string
   category: Types.ObjectId
-  description: string
-  content: string
+  specs: Array
   og_image: string
   key: string
   images: string[]
-  options:Array
+  options: Array
   pin: number
   display: boolean
 }

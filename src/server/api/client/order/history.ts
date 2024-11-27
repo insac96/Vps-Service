@@ -3,6 +3,7 @@ import type { IAuth } from "~~/types"
 export default defineEventHandler(async (event) => {
   try {
     const auth = await getAuth(event) as IAuth
+    if(!auth) throw 'Vui lòng đăng nhập'
     const { size, current, sort, search, user, range } = await readBody(event)
     if(!size || !current || !search) throw 'Dữ liệu phân trang sai'
     if(!sort.column || !sort.direction) throw 'Dữ liệu sắp xếp sai'
@@ -28,17 +29,17 @@ export default defineEventHandler(async (event) => {
 
     const list = await DB.Order
     .find(match)
-    .select('gate user game code money status createdAt')
+    .select('gate user product code number money status end_time createdAt')
     .populate({ path: 'gate', select: 'name' })
-    .populate({ path: 'game', select: 'name key' })
+    .populate({ path: 'product', select: 'name key' })
     .sort(sorting)
     .limit(size)
     .skip((current - 1) * size)
 
-    const total = await DB.Order.count(match)
-    return res(event, { result: { list, total } })
+    const total = await DB.Order.countDocuments(match)
+    return resp(event, { result: { list, total } })
   } 
   catch (e:any) {
-    return res(event, { code: 400, message: e.toString() })
+    return resp(event, { code: 400, message: e.toString() })
   }
 })

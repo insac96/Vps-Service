@@ -69,30 +69,25 @@
         <UFormGroup label="Tên sản phẩm">
           <UInput v-model="stateAdd.name" />
         </UFormGroup>
-        
-        <UFormGroup label="Mô tả">
-          <UTextarea v-model="stateAdd.description" autoresize />
-        </UFormGroup>
-
-        <UFormGroup label="Ảnh SEO">
-          <UiUploadImage v-model="stateAdd.og_image">
-            <template #default="{ select, loading }">
-              <UInput :model-value="stateAdd.og_image" :loading="loading" readonly @click="select" />
-            </template>
-          </UiUploadImage>
-        </UFormGroup>
-
-        <UFormGroup label="Hình ảnh">
-          <UiUploadImages v-model="stateAdd.images"></UiUploadImages>
-        </UFormGroup>
 
         <UFormGroup label="Hiển thị">
           <SelectDisplay v-model="stateAdd.display" />
         </UFormGroup>
 
+        <UiFlex justify="between" class="mb-2">
+          <UiText size="sm" weight="semibold" color="gray" text="Thông số sản phẩm" />
+          <UButton type="button" size="sm" icon="i-heroicons-plus" @click="stateAdd.specs.push({ key: '', value: '' })"
+            color="primary" class="ml-2 mt-2 w-[40px] h-[40px] flex items-center justify-center" />
+        </UiFlex>
+        <UiFlex class="align-center" v-for="(item, index) in stateAdd.specs" :key="index">
+          <UInput v-model="item.key" required class="w-2/5" />
+          <UInput v-model="item.value" required class="w-full ml-2" />
+          <UButton type="button" icon="i-heroicons-trash" @click="stateAdd.specs.splice(index, 1);" color="red"
+            class="ml-2 mt-2 w-[40px] h-[40px] flex items-center justify-center" />
+        </UiFlex>
+
         <UiFlex class="mt-6">
-          <SelectPin v-model="stateAdd.pin" class="mr-auto" />
-          <UButton type="submit" :loading="loading.add">Thêm</UButton>
+          <UButton class="ml-auto" type="submit" :loading="loading.add">Thêm</UButton>
           <UButton color="gray" @click="modal.add = false" :disabled="loading.add" class="ml-1">Đóng</UButton>
         </UiFlex>
       </UForm>
@@ -104,47 +99,29 @@
         <UFormGroup label="Danh mục">
           <SelectCategory v-model="stateEdit.category" />
         </UFormGroup>
+        <UFormGroup label="Hiển thị">
+          <SelectDisplay v-model="stateEdit.display" />
+        </UFormGroup>
 
         <UFormGroup label="Tên sản phẩm">
           <UInput v-model="stateEdit.name" />
         </UFormGroup>
 
-        <UFormGroup label="Mô tả">
-          <UTextarea v-model="stateEdit.description" autoresize />
-        </UFormGroup>
-
-        <UFormGroup label="Ảnh SEO">
-          <UiUploadImage v-model="stateEdit.og_image">
-            <template #default="{ select, loading }">
-              <UInput :model-value="stateEdit.og_image" :loading="loading" readonly @click="select" />
-            </template>
-          </UiUploadImage>
-        </UFormGroup>
-
-        <UFormGroup label="Hình ảnh">
-          <UiUploadImages v-model="stateEdit.images"></UiUploadImages>
-        </UFormGroup>
-
-        <UFormGroup label="Hiển thị">
-          <SelectDisplay v-model="stateEdit.display" />
-        </UFormGroup>
+        <UiFlex justify="between" class="mb-2">
+          <UiText size="sm" weight="semibold" color="gray" text="Thông số sản phẩm" />
+          <UButton type="button" size="sm" icon="i-heroicons-plus" @click="stateAdd.specs.push({ key: '', value: '' })"
+            color="primary" class="ml-2 mt-2 w-[40px] h-[40px] flex items-center justify-center" />
+        </UiFlex>
+        <UiFlex class="align-center" v-for="(item, index) in stateAdd.specs" :key="index">
+          <UInput v-model="item.key" required class="w-2/5" />
+          <UInput v-model="item.value" required class="w-full ml-2" />
+          <UButton type="button" icon="i-heroicons-trash" @click="stateAdd.specs.splice(index, 1);" color="red"
+            class="ml-2 mt-2 w-[40px] h-[40px] flex items-center justify-center" />
+        </UiFlex>
 
         <UiFlex class="mt-6">
-          <SelectPin v-model="stateEdit.pin" class="mr-auto" />
-          <UButton type="submit" :loading="loading.edit">Sửa</UButton>
+          <UButton class="mr-auto" type="submit" :loading="loading.edit">Sửa</UButton>
           <UButton color="gray" @click="modal.edit = false" :disabled="loading.edit" class="ml-1">Đóng</UButton>
-        </UiFlex>
-      </UForm>
-    </UModal>
-
-    <!-- Modal Content -->
-    <UModal v-model="modal.content" preventClose
-      :ui="{ width: 'sm:max-w-[calc(90%)] md:max-w-[calc(80%)] lg:max-w-4xl' }">
-      <UForm :state="stateContent" @submit="contentAction" class="p-4">
-        <UiEditor v-model="stateContent.content"></UiEditor>
-        <UiFlex justify="end" class="mt-4">
-          <UButton type="submit" :loading="loading.content">Lưu</UButton>
-          <UButton color="gray" @click="modal.content = false" :disabled="loading.content" class="ml-1">Đóng</UButton>
         </UiFlex>
       </UForm>
     </UModal>
@@ -153,16 +130,16 @@
       <UForm :state="statePrice" @submit="priceAction" class="p-4">
         <UiFlex class="align-center" v-for="(item, index) in options" :key="index">
           <UFormGroup label="Tháng" class="w-1/4">
-            <UInput type="number" v-model="item.number" :min="0" step="0.01" required/>
+            <UInput type="number" v-model="item.number" :min="0" step="0.01" required />
           </UFormGroup>
           <UFormGroup label="Giá thuê/tháng" class="w-full ml-2">
-            <UInput v-model="item.price" type="number" :min="0" step="0.01" required/>
+            <UInput v-model="item.price" type="number" :min="0" step="0.01" required />
           </UFormGroup>
-          <UButton type="button" icon="i-heroicons-trash" @click="removePrice(index)" color="red"
+          <UButton type="button" icon="i-heroicons-trash" @click="options.value.splice(index, 1);" color="red"
             class="ml-2 mt-2 w-[40px] h-[40px] flex items-center justify-center" />
         </UiFlex>
         <UiFlex justify="between" class="mt-4">
-          <UButton type="button" @click="addPrice">Thêm</UButton>
+          <UButton type="button" @click="options.value.push({ ...statePrice.value })">Thêm</UButton>
           <UiFlex>
             <UButton type="submit" :loading="loading.price" class="ml-1">Lưu</UButton>
             <UButton color="gray" @click="modal.price = false" :disabled="loading.price" class="ml-1">Đóng</UButton>
@@ -224,18 +201,22 @@ const page = ref({
   },
   total: 0,
 });
-watch(() => page.value.size,() => getList());
-watch(() => page.value.current,() => getList());
-watch(() => page.value.sort.column,() => getList());
-watch(() => page.value.sort.direction,() => getList());
+watch(() => page.value.size, () => getList());
+watch(() => page.value.current, () => getList());
+watch(() => page.value.sort.column, () => getList());
+watch(() => page.value.sort.direction, () => getList());
 
 // State
 const stateAdd = ref({
   category: null,
   name: null,
-  description: null,
-  og_image: null,
-  images: [],
+  specs: [ 
+    { key: 'CPU', value: '' },
+    { key: 'RAM', value: '' },
+    { key: 'SSD', value: '' },
+    { key: 'IOPS', value: '' },
+    { key: 'OS', value: '' }
+  ],
   pin: false,
   display: true,
 });
@@ -243,9 +224,7 @@ const stateEdit = ref({
   _id: null,
   category: null,
   name: null,
-  description: null,
-  og_image: null,
-  images: [],
+  specs: [],
   pin: null,
   display: null,
 });
@@ -288,13 +267,8 @@ const loading = ref({
   del: false,
   content: false,
 });
-const addPrice = () => {
-  options.value.push({ ...statePrice.value });
-};
 
-const removePrice = (index) => {
-  options.value.splice(index, 1);
-}
+
 // Actions
 const actions = (row) => [
   [
@@ -322,7 +296,7 @@ const actions = (row) => [
       icon: "i-bx-spreadsheet",
       click: async () => {
         try {
-          const content = await useAPI("admin/product/content/get", {_id: row._id,});
+          const content = await useAPI("admin/product/content/get", { _id: row._id, });
           stateContent.value._id = row._id;
           stateContent.value.content = content;
           modal.value.content = true;
@@ -336,7 +310,7 @@ const actions = (row) => [
       icon: "solar:dollar-bold",
       click: async () => {
         try {
-          options.value = row.options.length > 0 ? row.options : [{ price: row.price, number: 1 }];
+          options.value = row.options.length > 0 ? row.options : [{ price: 0, number: 1 }];
           modal.value.price = true;
           productId.value = row._id;
         } catch (e) {

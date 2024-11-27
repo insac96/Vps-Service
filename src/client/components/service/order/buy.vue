@@ -1,7 +1,6 @@
 <template>
   <div>
     <DataEmpty text="Vui lòng đăng nhập trước" icon="i-bx-credit-card" v-if="!authStore.isLogin" />
-    
     <div v-else>
       <UForm ref="form" :state="state" :validate="validate" @submit="submit">
         <UFormGroup label="Đơn hàng" name="game">
@@ -29,7 +28,6 @@
           <UButton color="gray" @click="modal.view = false, emits('done')">Đóng</UButton>
         </UiFlex>
       </UModal>
-
       <UModal v-model="modal.history" :ui="{ width: 'lg:max-w-4xl md:max-w-2xl sm:max-w-xl' }">
         <ServiceOrderHistory />
       </UModal>

@@ -3,7 +3,8 @@ import type { IAuth } from "~~/types"
 export default defineEventHandler(async (event) => {
   try {
     const auth = await getAuth(event) as IAuth
-
+    if(!auth) throw 'Vui lòng đăng nhập'
+    
     const { _id, reason } = await readBody(event)
     if(!_id) throw 'Không tìm thấy ID giao dịch'
     if(!reason) throw 'Vui lòng nhập lý do hủy'
@@ -22,9 +23,9 @@ export default defineEventHandler(async (event) => {
       reason: reason
     }, undefined, false)
 
-    return res(event, { message: 'Thao tác thành công' })
+    return resp(event, { message: 'Thao tác thành công' })
   } 
   catch (e:any) {
-    return res(event, { code: 400, message: e.toString() })
+    return resp(event, { code: 400, message: e.toString() })
   }
 })

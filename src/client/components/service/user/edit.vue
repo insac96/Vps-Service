@@ -1,36 +1,23 @@
 <template>
-  <UCard v-if="state">
+  <UCard v-if="state" class="sm:w-full lg:w-3/4">
     <UForm :state="state">
-      <UFormGroup label="Hòm thư (Email)" v-if="!authStore.profile.email">
+      <UFormGroup label="Họ tên">
+        <UInput v-model="state.username" />
+      </UFormGroup>
+      <UFormGroup label="Hòm thư (Email)">
         <UInput v-model="state.email" />
       </UFormGroup>
 
-      <UFormGroup label="Số điện thoại" v-if="!authStore.profile.phone">
+      <UFormGroup label="Số điện thoại">
         <UInput v-model="state.phone" />
       </UFormGroup>
 
-      <UFormGroup label="Ảnh đại diện">
-        <UiUploadImage v-model="state.avatar">
-          <template #default="{ select, loading }">
-            <UInput :model-value="state.avatar" :loading="loading" readonly @click="select"/>
-          </template>
-        </UiUploadImage>
+      <UFormGroup label="Địa chỉ">
+        <UInput v-model="state.address" />
       </UFormGroup>
 
-      <UFormGroup label="Facebook">
-        <UInput v-model="state.social.facebook" />
-      </UFormGroup>
-
-      <UFormGroup label="Zalo">
-        <UInput v-model="state.social.zalo" />
-      </UFormGroup>
-
-      <UFormGroup label="Tiktok">
-        <UInput v-model="state.social.tiktok" />
-      </UFormGroup>
-
-      <UFormGroup label="Telegram">
-        <UInput v-model="state.social.telegram" />
+      <UFormGroup label="Số CMND/CCCD">
+        <UInput v-model="state.cccd" />
       </UFormGroup>
 
       <UiFlex justify="end" class="mt-4">
@@ -42,9 +29,7 @@
 
 <script setup>
 const authStore = useAuthStore()
-
 const loading = ref(false)
-
 const state = ref(JSON.parse(JSON.stringify(authStore.profile)))
 
 const submit = async () => {

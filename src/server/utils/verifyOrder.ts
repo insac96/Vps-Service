@@ -35,7 +35,7 @@ export default async (
   // Get Payment
   const order = await DB.Order
   .findOne({ _id: _id })
-  .select('code gate user product status') as IDBOrder
+  .select('code gate user product status number createdAt') as IDBOrder
   if(!order) throw 'Giao dịch không tồn tại'
   if(order.status > 0) throw 'Không thể thao tác trên giao dịch này'
 
@@ -58,10 +58,11 @@ export default async (
   }
 
   // Update Payment
-  const time = new Date()
+  const time = new Date(order.createdAt)
   await DB.Order.updateOne({ _id: _id }, {
     money: realMoney,
     status: realStatus,
+    end_time: status == 1 && !isNaN(order.number) ? new Date(time.setMonth(time.getMonth() + order.number)) : null,
     verify: {
       person: verify_person,
       time: time,

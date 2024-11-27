@@ -7,7 +7,7 @@ export interface IAuth {
   type: number
 }
 
-export interface IRes {
+export interface IResp {
   code? : number
   message?: string
   result?: any

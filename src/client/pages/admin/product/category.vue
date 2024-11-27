@@ -40,6 +40,13 @@
         <UFormGroup label="Tên">
           <UInput v-model="stateAdd.name" />
         </UFormGroup>
+        <UFormGroup label="Ảnh">
+          <UiUploadImage v-model="stateAdd.image">
+            <template #default="{ select, loading }">
+              <UInput :model-value="stateAdd.image" :loading="loading" readonly @click="select" />
+            </template>
+          </UiUploadImage>
+        </UFormGroup>
         <UFormGroup label="Màu sắc" class="mt-4">
           <USelectMenu class="w-full" size="lg" v-model="stateAdd.color" :options="colors" item-value="value">
             <template #option="{ option: person }">
@@ -48,7 +55,6 @@
             </template>
           </USelectMenu>
         </UFormGroup>
-
         <UiFlex justify="end" class="mt-6">
           <UButton type="submit" :loading="loading.add">Thêm</UButton>
           <UButton color="gray" @click="modal.add = false" :disabled="loading.add" class="ml-1">Đóng</UButton>
@@ -61,6 +67,13 @@
       <UForm :state="stateEdit" @submit="editAction" class="p-4">
         <UFormGroup label="Tên">
           <UInput v-model="stateEdit.name" />
+        </UFormGroup>
+        <UFormGroup label="Ảnh">
+          <UiUploadImage v-model="stateEdit.image">
+            <template #default="{ select, loading }">
+              <UInput :model-value="stateEdit.image" :loading="loading" readonly @click="select" />
+            </template>
+          </UiUploadImage>
         </UFormGroup>
         <UFormGroup label="Màu sắc" class="mt-4">
           <USelectMenu class="w-full" size="lg" v-model="stateEdit.color" :options="colors" item-value="value">
@@ -139,11 +152,13 @@ watch(() => page.value.sort.direction, () => getList())
 // State
 const stateAdd = ref({
   name: null,
+  image: null,
   color: 'Chọn màu'
 })
 const stateEdit = ref({
   _id: null,
   name: null,
+  image: null,
   color: 'Chọn màu'
 })
 
@@ -187,7 +202,6 @@ const getList = async () => {
   try {
     loading.value.load = true
     const data = await useAPI('admin/category/list', JSON.parse(JSON.stringify(page.value)))
-
     loading.value.load = false
     list.value = data.list
     page.value.total = data.total

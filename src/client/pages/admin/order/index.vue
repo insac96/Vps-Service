@@ -62,6 +62,10 @@
         <template #verify_time-data="{ row }">
           {{ row.verify_time ? useDayJs().displayFull(row.verify_time) : '...' }}
         </template>
+        
+        <template #end_time-data="{ row }">
+          {{ row.status == 1 ? useDayJs().displayFull(row.end_time) : '...' }}
+        </template>
 
         <template #createdAt-data="{ row }">
           {{ useDayJs().displayFull(row.createdAt) }}
@@ -157,6 +161,10 @@ const columns = [
   },{
     key: 'number',
     label: 'Thời gian thuê',
+    sortable: true
+  },{
+    key: 'end_time',
+    label: 'Thời gian hết hạn',
     sortable: true
   },{
     key: 'status',

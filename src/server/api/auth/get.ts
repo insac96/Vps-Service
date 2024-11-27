@@ -4,14 +4,17 @@ export default defineEventHandler(async (event) => {
   try {
     // Get User
     const auth = await getAuth(event) as IAuth
-    const user = await DB.User.findOne({ _id: auth._id }).select('account type currency') as IDBUser
+    const user = await DB.User.findOne({ _id: auth._id }).select('username type email phone cccd address') as IDBUser
     // Result
     await user.save()
     const userStore : IDBUserStore = {
       _id: user._id,
-      account: user.account,
+      username: user.username,
       type: user.type,
-      currency: user.currency
+      email: user.email,
+      phone: user.phone,
+      cccd: user.cccd,
+      address: user.address
     }
     return resp(event, { result: userStore })
   } 

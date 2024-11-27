@@ -8,4 +8,5 @@ export interface IDBCategory {
   key: string
   color: string
   display: boolean
+  image: string
 }
