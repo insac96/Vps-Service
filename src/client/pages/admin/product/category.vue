@@ -37,10 +37,10 @@
     <!-- Modal Add -->
     <UModal v-model="modal.add" preventClose>
       <UForm :state="stateAdd" @submit="addAction" class="p-4">
-        <UFormGroup label="Tên">
+        <UFormGroup label="Tên danh mục">
           <UInput v-model="stateAdd.name" />
         </UFormGroup>
-        <UFormGroup label="Ảnh">
+        <UFormGroup label="Hình ảnh">
           <UiUploadImage v-model="stateAdd.image">
             <template #default="{ select, loading }">
               <UInput :model-value="stateAdd.image" :loading="loading" readonly @click="select" />
@@ -65,10 +65,10 @@
     <!-- Modal Edit -->
     <UModal v-model="modal.edit" preventClose>
       <UForm :state="stateEdit" @submit="editAction" class="p-4">
-        <UFormGroup label="Tên">
+        <UFormGroup label="Tên danh mục">
           <UInput v-model="stateEdit.name" />
         </UFormGroup>
-        <UFormGroup label="Ảnh">
+        <UFormGroup label="Hình ảnh">
           <UiUploadImage v-model="stateEdit.image">
             <template #default="{ select, loading }">
               <UInput :model-value="stateEdit.image" :loading="loading" readonly @click="select" />

@@ -5,7 +5,7 @@ export const useAuthStore = defineStore('auth', () => {
   const modal = ref(false)
   const isLogin = ref(false)
   const profile : Ref<IDBUserStore | undefined> = ref(undefined)
-
+  const router = useRouter()
   function setModal (data : boolean) {
     modal.value = data
   }
@@ -36,6 +36,7 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       await useAPI('auth/sign/out')
       setAuth(null)
+      router.push('/')
       return Promise.resolve()
     }
     catch (e) {

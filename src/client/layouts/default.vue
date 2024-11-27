@@ -1,21 +1,25 @@
 <template>
-  <div class="LayoutDefault">
+  <div :class="authStore.isLogin ? 'LayoutDefault' : '' ">
     <header>
       <LayoutDefaultHeader />
     </header>
-
-    <nav class="border-r order-gray-100 dark:border-gray-800">
+    <nav v-if="!!authStore.isLogin" class="shadow-sm dark:shadow-xl">
       <LayoutDefaultNav />
     </nav>
 
     <main class="pt-[var(--layout-default-header-size)]">
       <UContainer class="p-2">
         <slot></slot>
-
       </UContainer>
     </main>
+
   </div>
 </template>
+
+<script setup>
+const authStore = useAuthStore()
+
+</script>
 
 <style lang="sass">
 :root

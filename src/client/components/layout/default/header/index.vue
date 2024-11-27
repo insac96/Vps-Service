@@ -5,7 +5,7 @@
     backdrop-blur-xl
     shadow-sm dark:shadow-xl
     h-[var(--layout-default-header-size)] max-h-[var(--layout-default-header-size)]
-    px-2
+    px-5
   ">
     <!-- Left -->
     <UiFlex class="mr-1">
@@ -14,9 +14,7 @@
       <!-- Nav Toogle -->
       <LayoutDefaultNavToggle class="mr-1"/>
       <!-- Search -->
-      <LayoutDefaultHeaderSearch />
     </UiFlex>
-
     <!-- Right -->
     <UiFlex>
       <!-- Auth -->

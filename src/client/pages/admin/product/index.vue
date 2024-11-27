@@ -22,13 +22,12 @@
           }}</UiText>
         </template>
 
-        <template #price-data="{ row }">
-          <UiText>{{ useMoney().toMoney(row.price) }}</UiText>
+        <template #show-data="{ row }">
+          <UBadge class="cursor-pointer" variant="soft" color="primary" @click="viewSpecs(row.specs)">Xem</UBadge>
         </template>
 
-        <template #images-data="{ row }">
-          <UiImgs v-if="row.images && row.images.length > 0" :src="row.images" />
-          <span v-else>...</span>
+        <template #price-data="{ row }">
+          <UBadge class="cursor-pointer" variant="soft" color="primary" @click="viewPrice(row)">Xem</UBadge>
         </template>
 
         <template #pin-data="{ row }">
@@ -82,7 +81,7 @@
         <UiFlex class="align-center" v-for="(item, index) in stateAdd.specs" :key="index">
           <UInput v-model="item.key" required class="w-2/5" />
           <UInput v-model="item.value" required class="w-full ml-2" />
-          <UButton type="button" icon="i-heroicons-trash" @click="stateAdd.specs.splice(index, 1);" color="red"
+          <UButton type="button" icon="i-heroicons-trash" @click="stateAdd.specs.splice(index, 1)" color="red"
             class="ml-2 mt-2 w-[40px] h-[40px] flex items-center justify-center" />
         </UiFlex>
 
@@ -99,28 +98,29 @@
         <UFormGroup label="Danh mục">
           <SelectCategory v-model="stateEdit.category" />
         </UFormGroup>
-        <UFormGroup label="Hiển thị">
-          <SelectDisplay v-model="stateEdit.display" />
-        </UFormGroup>
 
         <UFormGroup label="Tên sản phẩm">
           <UInput v-model="stateEdit.name" />
         </UFormGroup>
 
+        <UFormGroup label="Hiển thị">
+          <SelectDisplay v-model="stateEdit.display" />
+        </UFormGroup>
+
         <UiFlex justify="between" class="mb-2">
           <UiText size="sm" weight="semibold" color="gray" text="Thông số sản phẩm" />
-          <UButton type="button" size="sm" icon="i-heroicons-plus" @click="stateAdd.specs.push({ key: '', value: '' })"
+          <UButton type="button" size="sm" icon="i-heroicons-plus" @click="stateEdit.specs.push({ key: '', value: '' })"
             color="primary" class="ml-2 mt-2 w-[40px] h-[40px] flex items-center justify-center" />
         </UiFlex>
-        <UiFlex class="align-center" v-for="(item, index) in stateAdd.specs" :key="index">
+        <UiFlex class="align-center" v-for="(item, index) in stateEdit.specs" :key="index">
           <UInput v-model="item.key" required class="w-2/5" />
           <UInput v-model="item.value" required class="w-full ml-2" />
-          <UButton type="button" icon="i-heroicons-trash" @click="stateAdd.specs.splice(index, 1);" color="red"
+          <UButton type="button" icon="i-heroicons-trash" @click="stateEdit.specs.splice(index, 1)" color="red"
             class="ml-2 mt-2 w-[40px] h-[40px] flex items-center justify-center" />
         </UiFlex>
 
         <UiFlex class="mt-6">
-          <UButton class="mr-auto" type="submit" :loading="loading.edit">Sửa</UButton>
+          <UButton class="ml-auto" type="submit" :loading="loading.edit">Sửa</UButton>
           <UButton color="gray" @click="modal.edit = false" :disabled="loading.edit" class="ml-1">Đóng</UButton>
         </UiFlex>
       </UForm>
@@ -135,17 +135,40 @@
           <UFormGroup label="Giá thuê/tháng" class="w-full ml-2">
             <UInput v-model="item.price" type="number" :min="0" step="0.01" required />
           </UFormGroup>
-          <UButton type="button" icon="i-heroicons-trash" @click="options.value.splice(index, 1);" color="red"
+          <UButton type="button" icon="i-heroicons-trash" @click="options.splice(index, 1)" color="red"
             class="ml-2 mt-2 w-[40px] h-[40px] flex items-center justify-center" />
         </UiFlex>
         <UiFlex justify="between" class="mt-4">
-          <UButton type="button" @click="options.value.push({ ...statePrice.value })">Thêm</UButton>
+          <UButton type="button" @click="options.push({ ...statePrice.value })">Thêm</UButton>
           <UiFlex>
             <UButton type="submit" :loading="loading.price" class="ml-1">Lưu</UButton>
             <UButton color="gray" @click="modal.price = false" :disabled="loading.price" class="ml-1">Đóng</UButton>
           </UiFlex>
         </UiFlex>
       </UForm>
+    </UModal>
+    <!-- Modal show -->
+    <UModal v-model="modal.show">
+      <div class="p-4">
+        <UiText text="Thông số kỹ thuật" weight="semibold" size="lg" class="mb-3" />
+        <UiFlex class="align-center border border-gray-200 rounded-lg dark:border-gray-800 p-2 mb-2" v-for="(item, index) in dataShow" :key="index">
+          <UiText equired class="w-2/5 font-semibold" >{{item.key}} :</UiText>
+          <UiText :text="item.value" required class="w-full ml-2" />
+        </UiFlex>
+      </div>
+    </UModal>
+    <!-- Modal show -->
+    <UModal v-model="modal.options">
+      <div class="p-4">
+        <UiText text="Giá thuê/tháng" weight="semibold" size="lg" class=" mb-3" />
+        <UiFlex v-if="dataPrice && dataPrice.length > 0" class="align-center border border-gray-200 rounded-lg dark:border-gray-800 p-2 mb-2" v-for="(item, index) in dataPrice" :key="index">
+          <UiText equired class="w-2/5 font-semibold" >{{item.number}} Tháng :</UiText>
+          <UiText required class="w-full ml-2" >{{ useMoney().toMoney(item.price) }}đ</UiText>
+        </UiFlex>
+        <div v-else>
+          <UiText text="Chưa có giá thuê"  color="red" weight="semibold" size="sm" class="m-1 mb-3" />
+        </div>
+      </div>
     </UModal>
   </UiContent>
 </template>
@@ -154,7 +177,8 @@
 // List
 const list = ref([]);
 const options = ref([]);
-
+const dataShow = ref([]);
+const dataPrice = ref([]);
 // Columns
 const columns = [
   {
@@ -162,17 +186,16 @@ const columns = [
     label: "Tên sản phẩm",
   },
   {
-    key: "images",
-    label: "Hình ảnh",
+    key: "show",
+    label: "Thông số",
+  },
+  {
+    key: "price",
+    label: "Giá thuê/Tháng",
   },
   {
     key: "category",
     label: "Danh mục",
-  },
-  {
-    key: "pin",
-    label: "Ghim",
-    sortable: true,
   },
   {
     key: "display",
@@ -201,21 +224,17 @@ const page = ref({
   },
   total: 0,
 });
-watch(() => page.value.size, () => getList());
-watch(() => page.value.current, () => getList());
-watch(() => page.value.sort.column, () => getList());
-watch(() => page.value.sort.direction, () => getList());
 
 // State
 const stateAdd = ref({
   category: null,
   name: null,
-  specs: [ 
-    { key: 'CPU', value: '' },
-    { key: 'RAM', value: '' },
-    { key: 'SSD', value: '' },
-    { key: 'IOPS', value: '' },
-    { key: 'OS', value: '' }
+  specs: [
+    { key: "CPU", value: "" },
+    { key: "RAM", value: "" },
+    { key: "SSD", value: "" },
+    { key: "IOPS", value: "" },
+    { key: "OS", value: "" },
   ],
   pin: false,
   display: true,
@@ -241,8 +260,9 @@ const productId = ref(null);
 const modal = ref({
   add: false,
   edit: false,
-  content: false,
   price: false,
+  options: false,
+  show: false
 });
 
 watch(
@@ -251,9 +271,14 @@ watch(
     !val &&
     (stateAdd.value = {
       category: null,
-      title: null,
-      description: null,
-      og_image: null,
+      name: null,
+      specs: [
+        { key: "CPU", value: "" },
+        { key: "RAM", value: "" },
+        { key: "SSD", value: "" },
+        { key: "IOPS", value: "" },
+        { key: "OS", value: "" },
+      ],
       pin: false,
       display: true,
     })
@@ -267,8 +292,16 @@ const loading = ref({
   del: false,
   content: false,
 });
-
-
+const viewSpecs = (data) => {
+  dataShow.value = data;
+  modal.value.show = true
+}
+const viewPrice = (data) => {
+  console.log(data.options);
+  
+  dataPrice.value = data.options;
+  modal.value.options = true
+}
 // Actions
 const actions = (row) => [
   [
@@ -286,23 +319,9 @@ const actions = (row) => [
         Object.keys(stateEdit.value).forEach(
           (key) => (stateEdit.value[key] = row[key])
         );
-        stateEdit.value.images = JSON.parse(JSON.stringify(row.images));
+        stateEdit.value.specs = JSON.parse(JSON.stringify(row.specs));
         stateEdit.value.category = row.category._id;
         modal.value.edit = true;
-      },
-    },
-    {
-      label: "Sửa nội dung",
-      icon: "i-bx-spreadsheet",
-      click: async () => {
-        try {
-          const content = await useAPI("admin/product/content/get", { _id: row._id, });
-          stateContent.value._id = row._id;
-          stateContent.value.content = content;
-          modal.value.content = true;
-        } catch (e) {
-          return;
-        }
       },
     },
     {
@@ -327,7 +346,22 @@ const actions = (row) => [
     },
   ],
 ];
-
+watch(
+  () => page.value.size,
+  () => getList()
+);
+watch(
+  () => page.value.current,
+  () => getList()
+);
+watch(
+  () => page.value.sort.column,
+  () => getList()
+);
+watch(
+  () => page.value.sort.direction,
+  () => getList()
+);
 // Fetch
 const getList = async () => {
   try {
@@ -407,7 +441,10 @@ const contentAction = async () => {
 const priceAction = async () => {
   try {
     loading.value.price = true;
-    await useAPI("admin/product/options/edit", { options: JSON.parse(JSON.stringify(options.value)), _id: productId.value });
+    await useAPI("admin/product/options/edit", {
+      options: JSON.parse(JSON.stringify(options.value)),
+      _id: productId.value,
+    });
     loading.value.price = false;
     modal.value.price = false;
   } catch (e) {
