@@ -66,6 +66,7 @@
 
 <script lang="ts" setup>
 const cartStore = useCartStore();
+const modal = ref(false);
 
 const totalPrice = computed(() => {
   return cartStore?.cart?.reduce((total: number, item: any) => {
