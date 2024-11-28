@@ -10,9 +10,9 @@
     <!-- Left -->
     <UiFlex class="mr-1">
       <!-- Logo -->
-      <NuxtLink to="/"><UiLogo class="mr-4 hidden md:flex"/></NuxtLink>
+      <NuxtLink to="/"><UiLogo class="mr-4 md:flex"/></NuxtLink>
       <!-- Nav Toogle -->
-      <LayoutDefaultNavToggle class="mr-1"/>
+      <!-- <LayoutDefaultNavToggle v-if="!!authStore.isLogin" class="mr-1"/> -->
       <!-- Search -->
     </UiFlex>
     <!-- Right -->
@@ -22,3 +22,7 @@
     </UiFlex>
   </UiFlex>
 </template>
+
+<script setup>
+const authStore = useAuthStore()
+</script>

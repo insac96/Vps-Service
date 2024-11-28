@@ -1,18 +1,17 @@
 <template>
-  <div :class="authStore.isLogin ? 'LayoutDefault' : '' ">
-    <header>
+  <div>
+    <header class="header">
       <LayoutDefaultHeader />
     </header>
-    <nav v-if="!!authStore.isLogin" class="shadow-sm dark:shadow-xl">
-      <LayoutDefaultNav />
-    </nav>
 
-    <main class="pt-[var(--layout-default-header-size)]">
+    <main class="pt-[var(--layout-default-header-size)] min-h-[calc(100vh-var(--layout-default-header-size))]">
       <UContainer class="p-2">
         <slot></slot>
       </UContainer>
     </main>
-
+    <footer class="mt-auto">
+      <LayoutDefaultFooter />
+    </footer>
   </div>
 </template>
 
@@ -26,22 +25,13 @@ const authStore = useAuthStore()
   --layout-default-header-size: 3.5rem
   --layout-default-nav-size: 250px
 
-.LayoutDefault
-  --layout-nav-reponsize: -100%
 
-  position: relative
-  height: 100%
-  min-height: 100%
-  display: grid
-  grid-template-columns: 0 1fr
-  grid-template-areas: "nav main"
-
-  header
-    position: fixed
-    top: 0
-    left: 0
-    width: 100%
-    z-index: 1
+.header
+  position: fixed
+  top: 0
+  left: 0
+  width: 100%
+  z-index: 1
 
   nav
     position: fixed
@@ -66,5 +56,4 @@ const authStore = useAuthStore()
   .LayoutDefault
     --layout-nav-reponsize: 0
     grid-template-columns: var(--layout-default-nav-size) 1fr
-
 </style>

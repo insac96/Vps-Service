@@ -1,15 +1,17 @@
 <template>
   <UiFlex>
-    <UDropdown 
-      :items="menu" 
-      :ui="{ 
-        item: {
-          disabled: 'cursor-text select-text' } 
-      }" 
-      :popper="{ 
-        placement: 'bottom-end' 
-      }"
-    >
+    <UiFlex @click="router.push('/cart')" class="mr-2 cursor-pointer">
+      <UChip size="xl" :text="cartStore.cart?.length || '0'">
+        <UButton icon="material-symbols:shopping-cart" color="gray" />
+      </UChip>
+    </UiFlex>
+    <UDropdown :items="menu" :ui="{
+      item: {
+        disabled: 'cursor-text select-text'
+      }
+    }" :popper="{
+        placement: 'bottom-end'
+      }">
       <UAvatar icon="i-bx-user" />
       <template #item="{ item }">
         <UiText class="truncate">{{ item.label }}</UiText>
@@ -24,6 +26,14 @@
 
 <script setup>
 const authStore = useAuthStore()
+const router = useRouter()
+const cartStore = useCartStore();
+
+watchEffect(() => {
+  if (!!authStore.isLogin) {
+    cartStore.getCart()
+  }
+})
 
 const modal = ref({
   order: false
@@ -31,8 +41,8 @@ const modal = ref({
 
 const menu = computed(() => {
   const list = []
-  
-  if(authStore.profile.type > 0){
+
+  if (authStore.profile.type > 0) {
     list.push([{
       label: 'Quản trị viên',
       icon: 'i-eos-icons-admin',
@@ -40,7 +50,6 @@ const menu = computed(() => {
       click: () => navigateTo('/admin/statistic')
     }])
   }
-
   list.push([{
     label: 'Tài khoản',
     icon: 'i-bx-user',
@@ -51,7 +60,7 @@ const menu = computed(() => {
     label: 'Đơn hàng',
     icon: 'i-bx-history',
     click: () => navigateTo('/order')
-  },{
+  }, {
     label: 'Đăng xuất',
     icon: 'i-bx-log-in',
     click: () => authStore.delAuth()

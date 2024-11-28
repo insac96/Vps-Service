@@ -1,7 +1,7 @@
 export default defineEventHandler(async (event) => {
     try {
         const user = (await getAuth(event) as IAuth)
-       if(!user) throw 'Vui lòng đăng nhập trước'
+       if(!user) throw 'Vui lòng đăng nhập trước trước'
 
        const body = await readBody(event)
        const { key, gateId, option } = body

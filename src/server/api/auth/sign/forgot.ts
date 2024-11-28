@@ -5,7 +5,7 @@ import type { IDBUser } from "~~/types"
 export default defineEventHandler(async (event) => {
   try {
     const auth = await getAuth(event) as IDBUser
-    if(!auth) throw 'Vui lòng đăng nhập'
+    if(!auth) throw 'Vui lòng đăng nhập trước'
     if(!!auth.block) throw 'Tài khoản của bạn đang bị khóa'
 
     const runtimeConfig = useRuntimeConfig()

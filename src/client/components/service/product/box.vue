@@ -13,7 +13,7 @@
         <UiText class="min-w-[70px]" weight="semibold" size="base"> {{ item.key }} :</UiText>
         <UiText class="ml-2 line-clamp-1" size="base">{{ item.value }}</UiText>
       </UiFlex>
-      <USelectMenu v-model="state.option" :options="product.options" option-attribute="number"
+      <USelectMenu v-model="state" :options="product.options" option-attribute="number"
         class="border mt-2 border-gray-200 dark:border-gray-600 rounded-lg">
         <template #option="{ option }">
           <span class="truncate">{{ option?.number }} tháng -
@@ -25,7 +25,9 @@
           </span>
         </template>
       </USelectMenu>
-      <UButton color="primary" size="md" @click="modal = true"
+      <UButton v-if="!!authStore.isLogin" color="primary" size="md" @click="open(product.key)"
+        class="w-full flex items-center rounded-lg my-2 justify-center">Đăng ký ngay</UButton>
+      <UButton v-else color="primary" size="md" @click="authStore.setModal(true)"
         class="w-full flex items-center rounded-lg my-2 justify-center">Đăng ký ngay</UButton>
     </template>
   </UCard>
@@ -33,9 +35,11 @@
 
 <script setup>
 const props = defineProps(["product"]);
-const state = ref({
-  option: null
-})
+const authStore = useAuthStore()
+const state = ref(null)
+const open = async (key) => {
+  await navigateTo(`/product/${key}`)
+}
 </script>
 
 <style lang="sass">

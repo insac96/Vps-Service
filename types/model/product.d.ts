@@ -8,9 +8,8 @@ export interface IDBProduct {
   number: string
   category: Types.ObjectId
   specs: Array
-  og_image: string
+  price: string
   key: string
-  images: string[]
   options: Array
   pin: number
   display: boolean

@@ -1,12 +1,20 @@
 <template>
-  <UiFlex type="col" class="space-y-4" v-if="menus">
+  <UiFlex type="col" class="space-y-4 " v-if="menus">
     <div v-for="(menu, index) in menus" :key="index">
-      <UiText :text="menu.name" size="sm" color="gray" class="my-3 px-1" />
-      <UButton v-for="(item, i) in menu.child" :key="i" :icon="item.icon" :label="item.label" @click="item.click"
-        class="w-full" variant="ghost" color="gray" :ui="{
+      <UiText :text="menu.name" size="sm" color="gray" class="my-2 px-1" />
+      <UButton 
+        v-for="(item, i) in menu.child" :key="i"
+        :icon="item.icon"
+        :label="item.label"
+        @click="item.click"
+        class="w-full"
+        variant="ghost"
+        color="gray"
+        :ui="{
           icon: { base: 'mr-2' }
-        }"></UButton>
-    </div>
+        }"
+      ></UButton>
+    </div> 
   </UiFlex>
 </template>
 

@@ -7,13 +7,13 @@ export default async (event: H3Event, throwError : boolean = true) : Promise<IAu
 
   try {
     const token = getCookie(event, 'token-auth')
-    if(!token) throw 'Vui lòng đăng nhập trước'
+    if(!token) throw 'Vui lòng đăng nhập trước trước'
 
     const decoded = jwt.verify(token, runtimeConfig.apiSecret) as any
     const user = await DB.User.findOne({ _id: decoded._id }).select('account type token') as IDBUser
     
     if(!user) throw 'Xác thực tài khoản không thành công'
-    if(user.token != token) throw 'Tài khoản đang đăng nhập ở nơi khác, vui lòng đăng nhập lại'
+    if(user.token != token) throw 'Tài khoản đang đăng nhập ở nơi khác, Vui lòng đăng nhập trước lại'
     
     const result = { 
       _id: user._id,

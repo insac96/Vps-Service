@@ -34,6 +34,15 @@ export interface IDBUserTax {
   address: string
 }
 
+export interface IDBUserCart {
+  _id: Types.ObjectId
+  createdAt: Date
+  updatedAt: Date
+  product: Types.ObjectId
+  user: Types.ObjectId
+  option: Object
+  quantity: number
+}
 
 export interface IDBUserStore {
   _id? : Types.ObjectId

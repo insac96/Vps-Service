@@ -1,6 +1,7 @@
 import type { Mongoose } from 'mongoose'
 import type { IDBUser, IDBUserTax } from '~~/types'
 import md5 from 'md5'
+import { IDBUserCart } from './../../../types/model/user.d';
 
 export const DBUser = (mongoose : Mongoose) => {
   const schema = new mongoose.Schema<IDBUser>({ 
@@ -50,3 +51,17 @@ export const DBUserTax = (mongoose : Mongoose) => {
   const model = mongoose.model('UserTax', schema, 'UserTax')
   return model
 } 
+
+export const DBUserCart = (mongoose : Mongoose) => {
+  const schema = new mongoose.Schema<IDBUserCart>({ 
+    user: {type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+    option: { type: Object },
+    quantity: { type: Number },
+  }, {
+    timestamps: true
+  })
+
+  const model = mongoose.model('Cart', schema, 'Cart')
+  return model 
+}

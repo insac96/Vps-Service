@@ -7,10 +7,10 @@ export default defineEventHandler(async (event) => {
     if (auth.type !== 100) throw "Bạn không phải quản trị viên";
 
     const body = await readBody(event);
-    const { category, name, specs } = body;
+    const { category, name, specs, price  } = body;
 
-    if (!category || !name || !specs) throw "Dữ liệu đầu vào không hợp lệ";
-    if (!Array.isArray(specs)) throw "Dữ liệu hình ảnh không hợp lệ";
+    if (!category || !name || !specs || !price) throw "Dữ liệu đầu vào không hợp lệ";
+    if (!Array.isArray(specs)) throw "Dữ liệu thông số không hợp lệ";
 
     const categoryCheck = await DB.Category.findOne({ _id: category }).select("_id name");
     if (!categoryCheck) throw "Danh mục không tồn tại";

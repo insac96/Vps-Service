@@ -5,8 +5,7 @@ export const DBProduct = (mongoose : Mongoose) => {
     const schema = new mongoose.Schema<IDBProduct>({ 
       name: { type: String },
       specs: { type: Array },
-      og_image: { type: String },
-      images: { type: [String] },
+      price: { type: String },
       category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
       key: { type: String },
       options:{type: Array },

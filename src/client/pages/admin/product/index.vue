@@ -69,6 +69,10 @@
           <UInput v-model="stateAdd.name" />
         </UFormGroup>
 
+        <UFormGroup label="Giá sản phẩm">
+          <UInput v-model="stateAdd.price" />
+        </UFormGroup>
+
         <UFormGroup label="Hiển thị">
           <SelectDisplay v-model="stateAdd.display" />
         </UFormGroup>
@@ -101,6 +105,10 @@
 
         <UFormGroup label="Tên sản phẩm">
           <UInput v-model="stateEdit.name" />
+        </UFormGroup>
+
+        <UFormGroup label="Giá sản phẩm">
+          <UInput v-model="stateEdit.price" />
         </UFormGroup>
 
         <UFormGroup label="Hiển thị">
@@ -236,6 +244,7 @@ const stateAdd = ref({
     { key: "IOPS", value: "" },
     { key: "OS", value: "" },
   ],
+  price: null,
   pin: false,
   display: true,
 });
@@ -244,13 +253,11 @@ const stateEdit = ref({
   category: null,
   name: null,
   specs: [],
+  price: null,
   pin: null,
   display: null,
 });
-const stateContent = ref({
-  _id: null,
-  content: null,
-});
+
 const statePrice = ref({
   price: null,
   number: undefined,
@@ -297,8 +304,6 @@ const viewSpecs = (data) => {
   modal.value.show = true
 }
 const viewPrice = (data) => {
-  console.log(data.options);
-  
   dataPrice.value = data.options;
   modal.value.options = true
 }
@@ -415,7 +420,6 @@ const delAction = async (_id) => {
   try {
     loading.value.del = true;
     await useAPI("admin/product/del", { _id });
-
     loading.value.del = false;
     getList();
   } catch (e) {
@@ -423,30 +427,14 @@ const delAction = async (_id) => {
   }
 };
 
-const contentAction = async () => {
-  try {
-    loading.value.content = true;
-    await useAPI(
-      "admin/product/content/edit",
-      JSON.parse(JSON.stringify(stateContent.value))
-    );
-
-    loading.value.content = false;
-    modal.value.content = false;
-  } catch (e) {
-    loading.value.content = false;
-  }
-};
 
 const priceAction = async () => {
   try {
     loading.value.price = true;
-    await useAPI("admin/product/options/edit", {
-      options: JSON.parse(JSON.stringify(options.value)),
-      _id: productId.value,
-    });
+    await useAPI("admin/product/options/edit", { options: JSON.parse(JSON.stringify(options.value)),_id: productId.value});
     loading.value.price = false;
     modal.value.price = false;
+    getList();
   } catch (e) {
     loading.value.price = false;
   }

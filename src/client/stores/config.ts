@@ -61,7 +61,7 @@ export const useConfigStore = defineStore('config', () => {
   })
 
   const bootConfig = async () => {
-    const cfg : IDBConfigStore = await useAPI('config/get')
+    const cfg : IDBConfigStore = await useAPI('admin/config/get')
     Object.assign(config, cfg)
   }
 

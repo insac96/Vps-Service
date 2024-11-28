@@ -1,7 +1,7 @@
 export default defineEventHandler(async (event) => {
   try {
     const auth = (await getAuth(event)) as IAuth;
-    if (!auth) throw "Vui lòng đăng nhập";
+    if (!auth) throw "Vui lòng đăng nhập trước";
 
     const { name, tax_code, address, email } = await readBody(event);
     if (!name || !tax_code || !address || !email) throw "Vui lòng nhập đủ thông tin";
