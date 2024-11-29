@@ -29,9 +29,9 @@ const authStore = useAuthStore()
 const router = useRouter()
 const cartStore = useCartStore();
 
-watchEffect(() => {
+watchEffect(async() => {
   if (!!authStore.isLogin) {
-    cartStore.getCart()
+    await cartStore.getCart()
   }
 })
 
@@ -54,6 +54,12 @@ const menu = computed(() => {
     label: 'Tài khoản',
     icon: 'i-bx-user',
     click: () => navigateTo('/account')
+  }])
+
+  list.push([{
+    label: 'Dịch vụ',
+    icon: 'material-symbols:home-repair-service',
+    click: () => navigateTo('/service')
   }])
 
   list.push([{

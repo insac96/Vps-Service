@@ -40,7 +40,9 @@ export interface IDBUserCart {
   updatedAt: Date
   product: Types.ObjectId
   user: Types.ObjectId
+  system: Types.ObjectId
   option: Object
+  server: string
   quantity: number
 }
 

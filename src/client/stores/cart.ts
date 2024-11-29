@@ -33,6 +33,15 @@ export const useCartStore = defineStore("cart", () => {
       return Promise.reject(e);
     }
   }
+  async function updateOption(data:any) {
+    try {
+      const updateOption = await useAPI("client/cart/option", data);
+      await getCart();
+      return Promise.resolve(updateOption);
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  }
 
   async function delCart(_id: string) {
     try {
@@ -44,5 +53,5 @@ export const useCartStore = defineStore("cart", () => {
     }
   }
 
-  return { cart, setCart, getCart, delCart, updateCart };
+  return { cart, setCart, getCart, delCart, updateCart, updateOption };
 });

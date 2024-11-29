@@ -57,6 +57,8 @@ export const DBUserCart = (mongoose : Mongoose) => {
     user: {type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
     option: { type: Object },
+    server: { type: String },
+    system: { type: mongoose.Schema.Types.ObjectId, ref: 'System' },
     quantity: { type: Number },
   }, {
     timestamps: true

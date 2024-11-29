@@ -25,10 +25,8 @@
           </span>
         </template>
       </USelectMenu>
-      <UButton v-if="!!authStore.isLogin" color="primary" size="md" @click="open(product.key)"
-        class="w-full flex items-center rounded-lg my-2 justify-center">Đăng ký ngay</UButton>
-      <UButton v-else color="primary" size="md" @click="authStore.setModal(true)"
-        class="w-full flex items-center rounded-lg my-2 justify-center">Đăng ký ngay</UButton>
+      <UButton v-if="!!authStore.isLogin" color="primary" size="md" @click="open(product.key)" class="w-full flex items-center rounded-lg my-2 justify-center">Đăng ký ngay</UButton>
+      <UButton v-else color="primary" size="md" @click="authStore.setModal(true)" class="w-full flex items-center rounded-lg my-2 justify-center">Đăng ký ngay</UButton>
     </template>
   </UCard>
 </template>

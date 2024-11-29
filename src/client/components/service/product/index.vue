@@ -3,7 +3,10 @@
     <UiIcon color="primary" name="icon-park-outline:ad-product" size="8" />
     <UiText text="Các gói VPS" weight="semibold" size="lg" />
   </UiFlex>
-  <div class="grid-cols-12 grid gap-4">
+  <div class="grid grid-cols-1 lg:grid-cols-12  lg:gap-6 md:gap-4 gap-2" v-if="!!loading.category">
+    <LoadingCategory v-for="i in 6" :key="i" class="xl:col-span-2 lg:col-span-4 col-span-6" />
+  </div>
+  <div v-else class="grid-cols-12 grid gap-4">
     <div v-for="option in category" :key="option.id" @click="page.category = option._id"
       :class="['grid col-span-6 md:col-span-2 h-28 flex flex-col justify-center items-center rounded-lg border relative cursor-pointer', option._id === page.category ? 'border-primary' : 'border-gray-200 dark:border-gray-600']">
       <div class="absolute top-2 right-2">
@@ -22,12 +25,12 @@
       <UiIcon color="primary" name="icon-park-outline:ad-product" size="8" />
       <UiText :text="title" weight="semibold" size="lg" />
     </UiFlex>
-    <div class="grid grid-cols-1 lg:grid-cols-12  lg:gap-6 md:gap-4 gap-2" v-if="!!loading || !list">
+    <div class="grid grid-cols-1 lg:grid-cols-12  lg:gap-6 md:gap-4 gap-2" v-if="!!loading.product || !list">
       <LoadingProductBox v-for="i in 8" :key="i" class="xl:col-span-3 lg:col-span-4 col-span-6" />
     </div>
     <div v-else>
       <UiEmpty v-if="list.length == 0" title="Hiện tại chưa có dữ liệu" />
-      <div class="grid grid-cols-1 lg:grid-cols-12 lg:gap-6 md:gap-4 gap-2 md:mb-6 mb-4" v-else>
+      <div class="grid grid-cols-1 lg:grid-cols-12 lg:gap-6 md:gap-4 gap-2 md:mb-6 mb-4 " v-else>
         <ServiceProductBox v-for="product in list" :key="product._id" :product="product"
           class="xl:col-span-3 lg:col-span-4 col-span-6" />
       </div>
@@ -41,7 +44,10 @@ const props = defineProps({
 })
 
 const list = ref(undefined)
-const loading = ref(false)
+const loading = ref({
+  category: true,
+  product: false
+})
 const category = ref([])
 const page = ref({
   category: null,
@@ -59,28 +65,26 @@ const page = ref({
 })
 
 watch(() => page.value.category, () => getProduct())
-const selectOption = (id) => {
-  page.value.category = id;
-};
+
 const getCategory = async () => {
   try {
-    loading.value = false;
+    loading.value.category = true;
     const data = await useAPI('client/category/get');
     category.value = data
     page.value.category = data[0]._id
-    loading.value = false;
+    loading.value.category = false;
   } catch (e) {
-    loading.value = false
+    loading.value.category = false
   }
 }
 const getProduct = async () => {
   try {
-    loading.value = false;
+    loading.value.product = true;
     const data = await useAPI('client/product/category', JSON.parse(JSON.stringify(page.value)));
     list.value = data.list;
-    loading.value = false;
+    loading.value.product = false;
   } catch (e) {
-    loading.value = false
+    loading.value.product = false
   }
 }
 onMounted(async () => {

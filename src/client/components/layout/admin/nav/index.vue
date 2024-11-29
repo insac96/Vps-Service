@@ -72,10 +72,19 @@ const navItems = [
     ]
   },
   {
+    label: 'Hệ điều hành',
+    icon: 'eos-icons:system-group',
+    defaultOpen: true,
+    slot: 'tab-3',
+    children: [
+      { label: 'Danh sách', to: '/admin/system' }, 
+    ]
+  },
+  {
     label: 'Nhật ký',
     icon: 'i-bx-history',
     defaultOpen: true,
-    slot: 'tab-3',
+    slot: 'tab-4',
     children: [
       { label: 'Admin log', to: '/admin/logs' }, 
     ]

@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
     const cart = await DB.UserCart.find({ user: user._id })
       .populate({
         path: "product",
-        select: "name category",
+        select: "name category options",
         populate: {
           path: "category",
           select: "name",

@@ -8,6 +8,7 @@ import { DBGate } from './gate'
 import { DBProduct } from './product'
 import { DBCategory } from './category'
 import { DBOrder } from './order'
+import { DBSystem } from './system'
 
 export default (mongoose : Mongoose) : IGlobalDB => {
   return {
@@ -17,6 +18,7 @@ export default (mongoose : Mongoose) : IGlobalDB => {
     UserTax: DBUserTax(mongoose),
     UserCart: DBUserCart(mongoose),
     Product: DBProduct(mongoose),
+    System: DBSystem(mongoose),
     Category: DBCategory(mongoose),
     Order: DBOrder(mongoose),
     LogUser: DBLogUser(mongoose),
