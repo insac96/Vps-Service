@@ -53,5 +53,15 @@ export const useCartStore = defineStore("cart", () => {
     }
   }
 
-  return { cart, setCart, getCart, delCart, updateCart, updateOption };
+  async function checkout (data:any){
+    try {
+      const checkout = await useAPI("client/order/create", data);
+      await getCart();
+      return Promise.resolve(checkout);
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  }
+
+  return { cart, setCart, getCart, delCart, updateCart, updateOption,checkout };
 });

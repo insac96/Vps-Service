@@ -1,17 +1,15 @@
-import { IDBProduct } from "../../../../../types/model/product"
-import { IDBUserCart } from "../../../../../types/model/user"
-import getAuth from "../../../utils/getAuth"
+import formatVNString from "../../../utils/formatVNString"
 
 export default defineEventHandler(async (event) => {
   try {
     const user = await getAuth(event) as IDBUser
     if(!user) throw 'Vui lòng đăng nhập trước'
-    const {key, option, name, system } = await readBody(event)
-    if(!key || !option || !name || !system) throw 'Dữ liệu đầu vào không hợp lệ'
+    const {key, option, server, os } = await readBody(event)
+    if(!key || !option || !server || !os) throw 'Dữ liệu đầu vào không hợp lệ'
 
     const product = await DB.Product.findOne({ key: key }).select('_id name') as IDBProduct
     if(!product) throw 'Sản phẩm không tồn tại'
-    
+
     const hasCart = await DB.UserCart.findOne({ product: product._id, user: user._id , option: option }).select('_id quantity option product') as IDBUserCart
     if(!!hasCart) {
       hasCart.quantity += 1
@@ -23,8 +21,8 @@ export default defineEventHandler(async (event) => {
       user: user._id,
       product: product._id,
       option: option,
-      system: system,
-      name: name,
+      os: os,
+      server: server,
       quantity: 1
     })
     cart.save()

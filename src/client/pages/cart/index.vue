@@ -91,11 +91,16 @@
     </div>
     <div v-if="!cartStore.cart || cartStore.cart.length === 0">
       <UiEmpty class="mt-20" title="Giỏ hàng rỗng" />
+      <NuxtLink href="/" class="btn btn-primary w-full mt-3 text-center block hover:underline text-primary" size="md">Quay lại</NuxtLink>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+definePageMeta({
+  middleware: 'auth'
+})
+
 const cartStore = useCartStore();
 const router = useRouter();
 const modal = ref(false);

@@ -13,6 +13,15 @@ export default defineEventHandler(async (event) => {
       if(!order) throw 'Giao dịch không tồn tại'
       if(order.status == 0) throw 'Giao dịch chưa được duyệt'
 
+      const service = await DB.Service.find({ order: body._id, user: auth._id })
+      if(!service) throw 'Không tìm thấy chi tiết giao dịch'
+
+      service.forEach((item) => {
+        item.end_time = null;
+        item.status = 0
+        item.save()
+      });
+
       order.status = 0
       await order.save()
       await logAdmin(event, `Hoàn tác trạng thái giao dịch đơn hàng <b>${order.code}</b>`, auth._id)

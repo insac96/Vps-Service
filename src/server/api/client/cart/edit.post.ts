@@ -5,6 +5,7 @@ export default defineEventHandler(async (event) => {
 
     const { _id, quantity } = await readBody(event);
     if (!_id || !quantity) throw "Dữ liệu không hợp lệ.";
+    if(quantity && !Number.isInteger(quantity)) throw 'Số lượng phải lớn hơn 0'
 
     const cart = await DB.UserCart.findOne({ _id: _id, user: user._id });
     if (!cart) throw "Không tìm thấy giỏ hàng";

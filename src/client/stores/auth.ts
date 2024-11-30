@@ -43,6 +43,8 @@ export const useAuthStore = defineStore('auth', () => {
       return Promise.reject(e)
     }
   }
+  
+
 
   return { modal, isLogin, profile, setModal, setAuth, getAuth, delAuth }
 })

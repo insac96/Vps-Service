@@ -10,11 +10,8 @@ export interface IDBOrder {
 
   gate: Types.ObjectId | IDBGate
   user: Types.ObjectId | IDBUser
-  product: Types.ObjectId | IDBProduct
-
   money: number
-  number:number
-
+  number: number
   code: string
   token: string
   end_time: Date
@@ -25,4 +22,17 @@ export interface IDBOrder {
     time: Date
     reason: string
   }
+}
+export interface IDBOrderDetail {
+  _id: Types.ObjectId
+  createdAt: Date
+  updatedAt: Date
+  order: Types.ObjectId | IDBOrder
+  product: Types.ObjectId | IDBProduct
+  os: Types.ObjectId | IDBOS
+  quantity: number
+  money: number
+  number: number
+  server: string
+  end_time: Date
 }

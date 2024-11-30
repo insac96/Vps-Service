@@ -1,9 +1,10 @@
 import type { Model } from 'mongoose'
 import type { IDBCategory } from './category'
 import type { IDBProduct } from './product'
-import type { IDBOrder } from './order'
+import type { IDBOrder, IDBOrderDetail } from './order'
 import type { IDBUser, IDBUserCart, IDBUserTax } from './user'
-import type { IDBSystem } from './system'
+import type { IDBOS } from './os'
+import type { IDBService } from './service'
 export { IDBConfig, IDBConfigStore } from './config'
 export { IDBUser, IDBUserStore } from './user'
 export { IDBGate } from './gate'
@@ -19,9 +20,12 @@ export interface IGlobalDB {
   Gate: Model<IDBGate>
   Category: Model<IDBCategory>
   Product: Model<IDBProduct>
-  Order: Model<IDBOrder>
   
-  System: Model<IDBSystem>
+  Order: Model<IDBOrder>
+  OrderDetail: Model<IDBOrderDetail>
+   
+  Service: Model<IDBService>
+  OS: Model<IDBOS>
   
   LogAdmin: Model<IDBLogAdmin>
   LogUser: Model<IDBLogUser>

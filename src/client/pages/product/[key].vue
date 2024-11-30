@@ -36,11 +36,11 @@
               </div>
             </div>
             <UiFlex class="w-full flex-wrap md:flex-nowrap my-4">
-              <UFormGroup label="Đặt tên máy chủ" class="w-full md:w-2/4" name="name">
-                <UInput v-model="state.name" class="w-full" placeholder="servername.yourdomain.com" />
+              <UFormGroup label="Đặt tên máy chủ" class="w-full md:w-2/4" name="server">
+                <UInput v-model="state.server" class="w-full" placeholder="servername.yourdomain.com" />
               </UFormGroup>
-              <UFormGroup label="Hệ điều hành" class="w-full md:w-2/4 md:ml-2" name="system">
-                <SelectSystem v-model="state.system" />
+              <UFormGroup label="Hệ điều hành" class="w-full md:w-2/4 md:ml-2" name="os">
+                <SelectOs v-model="state.os" />
               </UFormGroup>
             </UiFlex>
           </div>
@@ -83,6 +83,9 @@
 </template>
 
 <script lang="ts" setup>
+definePageMeta({
+  middleware: 'auth'
+})
 const router = useRouter();
 const { setCart } = useCartStore();
 const route = useRoute();
@@ -94,8 +97,8 @@ const modal = ref(false);
 const state = ref<any>({
   key: route.params.key,
   option: undefined,
-  name: "",
-  system: undefined
+  server: "",
+  os: undefined
 });
 const getOption = (option: any, index: number) => {
   state.value.option = {
@@ -104,10 +107,11 @@ const getOption = (option: any, index: number) => {
     number: option.number
   };
 };
-const validate = (state:any) => {
+const validate = (state: any) => {
   const errors = [];
-  if(!state.name ) errors.push({ path: 'name', message: 'Vui lòng nhập tên máy chủ' });
-  if(!state.system) errors.push({ path: 'system', message: 'Vui lòng chọn hệ điều hành' });
+  if (!state.server) errors.push({ path: 'server', message: 'Vui lòng nhập tên máy chủ' });
+  if (/[^\x00-\x7F]/.test(state.server) || /\s/.test(state.server)) errors.push({ path: 'server', message: 'Tên máy chủ không hợp lệ' });
+  if (!state.os) errors.push({ path: 'os', message: 'Vui lòng chọn hệ điều hành' });
   return errors
 }
 const get = async () => {
@@ -125,12 +129,17 @@ const get = async () => {
     loading.value = false;
   }
 };
+function randomText(length: number) {
+  return Array.from({ length }, () => String.fromCharCode(97 + Math.floor(Math.random() * 26))).join('');
+}
 const addToCart = async () => {
   try {
     loading.value = true;
-    setCart(JSON.parse(JSON.stringify(state.value)));
+    state.value.server = state.value.server.trim() + '-' + randomText(4);
+    await setCart(JSON.parse(JSON.stringify(state.value)));
     loading.value = false;
     modal.value = false;
+    state.value.server = "";
   } catch (e) {
     loading.value = false;
   }

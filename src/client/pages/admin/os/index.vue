@@ -1,5 +1,5 @@
 <template>
-  <UiContent title="System" sub="Quản lý hệ điều hành">
+  <UiContent title="Operating System" sub="Quản lý hệ điều hành">
     <UiFlex class="mb-4">
       <USelectMenu v-model="page.size" :options="[5, 10, 20, 50, 100]" class="mr-auto" />
       <UButton color="gray" @click="modal.add = true">Thêm mới</UButton>
@@ -172,7 +172,7 @@ const actions = (row) => [
 const getList = async () => {
   try {
     loading.value.load = true
-    const data = await useAPI('admin/system/list', JSON.parse(JSON.stringify(page.value)))
+    const data = await useAPI('admin/os/list', JSON.parse(JSON.stringify(page.value)))
 
     loading.value.load = false
     list.value = data.list
@@ -186,7 +186,7 @@ const getList = async () => {
 const addAction = async () => {
   try {
     loading.value.add = true
-    await useAPI('admin/system/add', JSON.parse(JSON.stringify(stateAdd.value)))
+    await useAPI('admin/os/add', JSON.parse(JSON.stringify(stateAdd.value)))
     loading.value.add = false
     modal.value.add = false
     getList()
@@ -199,7 +199,7 @@ const addAction = async () => {
 const editAction = async () => {
   try {
     loading.value.edit = true
-    await useAPI('admin/system/edit', JSON.parse(JSON.stringify(stateEdit.value)))
+    await useAPI('admin/os/edit', JSON.parse(JSON.stringify(stateEdit.value)))
     loading.value.edit = false
     modal.value.edit = false
     getList()
@@ -212,7 +212,7 @@ const editAction = async () => {
 const delAction = async (_id) => {
   try {
     loading.value.del = true
-    await useAPI('admin/system/del', { _id })
+    await useAPI('admin/os/del', { _id })
     loading.value.del = false
     getList()
   }

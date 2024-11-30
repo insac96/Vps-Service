@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
     const sorting: Record<string, number> = {}
     sorting[sort.column] = sort.direction === 'desc' ? -1 : 1
 
-    const list = await DB.System
+    const list = await DB.OS
       .aggregate([
         {
           $project: {
@@ -27,7 +27,7 @@ export default defineEventHandler(async (event) => {
         { $limit: size }
       ])
 
-    const total = await DB.System.countDocuments()
+    const total = await DB.OS.countDocuments()
 
     return resp(event, { result: { list, total } })
   } catch (e: unknown) {

@@ -10,13 +10,13 @@ export default defineEventHandler(async (event) => {
     const { _id, name } = body
     if(!_id || !name) throw 'Dữ liệu đầu vào không hợp lệ'
 
-    const system = await DB.System.findOne({ _id: _id }).select('name')
-    if(!system) throw 'Hệ thống không tồn tại'
+    const os = await DB.OS.findOne({ _id: _id }).select('name')
+    if(!os) throw 'Hệ thống không tồn tại'
 
     delete body['_id']
-    await DB.System.updateOne({ _id: _id }, body)
+    await DB.OS.updateOne({ _id: _id }, body)
 
-    logAdmin(event, `Sửa thông tin hệ thống <b>${system.name}</b>`)
+    logAdmin(event, `Sửa thông tin hệ thống <b>${os.name}</b>`)
     return resp(event, { message: 'Sửa thành công' })
   } 
   catch (e:any) {

@@ -68,6 +68,7 @@ const navItems = [
     defaultOpen: true,
     slot: 'tab-2',
     children: [
+      { label: 'Dịch vụ', to: '/admin/service' }, 
       { label: 'Danh sách', to: '/admin/user' }, 
     ]
   },
@@ -77,7 +78,7 @@ const navItems = [
     defaultOpen: true,
     slot: 'tab-3',
     children: [
-      { label: 'Danh sách', to: '/admin/system' }, 
+      { label: 'Danh sách', to: '/admin/os' }, 
     ]
   },
   {

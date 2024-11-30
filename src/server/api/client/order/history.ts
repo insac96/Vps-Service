@@ -29,9 +29,8 @@ export default defineEventHandler(async (event) => {
 
     const list = await DB.Order
     .find(match)
-    .select('gate user product code number money status end_time createdAt')
+    .select('gate user code money status note end_time createdAt')
     .populate({ path: 'gate', select: 'name' })
-    .populate({ path: 'product', select: 'name key' })
     .sort(sorting)
     .limit(size)
     .skip((current - 1) * size)

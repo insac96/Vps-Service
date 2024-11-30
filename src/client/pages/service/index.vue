@@ -1,11 +1,149 @@
 <template>
-    <UiContent title="Service" sub="Danh sách dịch vụ">
-        <UiEmpty v-if="!authStore.isLogin" title='Bạn chưa đăng nhập' />
-        <div v-else >
-            dịch vụ
-        </div>
+    <UiContent title="Service" sub="Quản lý dịch vụ">
+        <UiFlex class="mb-4">
+            <USelectMenu v-model="page.size" :options="[5, 10, 20, 50, 100]" class="mr-auto" />
+            <UForm :state="page" @submit="getList" class="mr-1">
+                <UInput v-model="page.search.key" placeholder="Tìm kiếm..." icon="i-bx-search" size="sm" class="mr-1" />
+            </UForm>
+        </UiFlex>
+
+        <!-- Table -->
+        <UCard :ui="{ body: { padding: 'p-0 sm:p-0' } }">
+            <LoadingTable v-if="loading.load" />
+            <UTable v-model:sort="page.sort" :columns="selectedColumns" :rows="list">
+                <template #createdAt-data="{ row }">
+                    {{ useDayJs().displayFull(row.createdAt) }}
+                </template>
+                <template #product.name-data="{ row }">
+                   <UBadge variant="soft" color="primary" class="cursor-pointer" @click="router.push(`/service/${row._id}`)" >{{ row.product.name }}</UBadge>    
+                </template>
+                <template #status-data="{ row }">
+                    <UBadge :color="statusFormat[row.status].color" variant="soft">
+                        {{ statusFormat[row.status].label }}
+                    </UBadge>
+                </template>
+                <template #number-data="{ row }">
+                    {{ row.number || '...' }} Tháng
+                </template>
+
+                <template #end_time-data="{ row }">
+                    {{ row.end_time ? useDayJs().displayFull(row.end_time) : '...' }}
+                </template>
+
+                <template #updatedAt-data="{ row }">
+                    {{ useDayJs().displayFull(row.updatedAt) }}
+                </template>
+            </UTable>
+        </UCard>
+        <!-- Pagination -->
+        <UiFlex justify="between" class="py-4">
+            <USelectMenu v-model="selectedColumns" :options="columns" multiple placeholder="Chọn cột" />
+            <UPagination v-model="page.current" :page-count="page.size" :total="page.total" :max="4" />
+        </UiFlex>
     </UiContent>
 </template>
-<script lang="ts" setup>
-const authStore = useAuthStore()
+
+<script setup>
+// List
+const list = ref([]);
+const router = useRouter();
+// Columns
+const columns = [
+    {
+        key: "product.name",
+        label: "Tên VPS",
+    },
+    {
+        key: "os.name",
+        label: "Hệ điều hành",
+    },
+    {
+        key: "server",
+        label: "Tên máy chủ",
+    }, {
+        key: "status",
+        label: "Trạng thái",
+        sortable: true
+    },
+    {
+        key: "number",
+        label: "Thời gian thuê",
+        sortable: true
+    },
+    {
+        key: "quantity",
+        label: "Số lượng",
+        sortable: true
+    },
+    
+];
+const selectedColumns = ref([...columns]);
+
+// Page
+const page = ref({
+    size: 10,
+    current: 1,
+    sort: {
+        column: "updatedAt",
+        direction: "desc",
+    },
+    search: {
+        key: null,
+        by: 'PRODUCT'
+    },
+    total: 0,
+});
+
+// State
+const state = ref({
+    _id: null,
+    info: [{
+        ip: null,
+        password: null
+    }],
+});
+const statusFormat = {
+    0: { label: 'Chờ kích hoạt', color: 'orange' },
+    1: { label: 'Đã kích hoạt', color: 'green' },
+    2: { label: 'Hết hạn', color: 'primary' },
+    3: { label: 'Đã hủy', color: 'red' },
+}
+// Modal
+const modal = ref({
+    edit: false,
+});
+
+watch(() => modal.value.edit, (val) => !val &&
+    (state.value = {
+        _id: null,
+        info: [{ ip: null, password: null }],
+    })
+);
+
+// Loading
+const loading = ref({
+    load: true,
+    edit: false,
+});
+
+// Actions
+watch(() => page.value.size, () => getList());
+watch(() => page.value.current, () => getList());
+watch(() => page.value.sort.column, () => getList());
+watch(() => page.value.sort.direction, () => getList());
+watch(() => page.value.search.key, (val) => !val && getList())
+
+// Fetch
+const getList = async () => {
+    try {
+        loading.value.load = true;
+        const data = await useAPI("client/service/list", JSON.parse(JSON.stringify(page.value)));
+        loading.value.load = false;
+        list.value = data.list;
+        page.value.total = data.total;
+    } catch (e) {
+        loading.value.load = false;
+    }
+};
+getList();
 </script>

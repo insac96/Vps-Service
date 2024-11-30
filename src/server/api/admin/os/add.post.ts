@@ -11,10 +11,10 @@ export default defineEventHandler(async (event) => {
     if(!name) throw 'Dữ liệu đầu vào không hợp lệ'
 
 
-    const getByName = await DB.System.findOne({ name: name }).select('_id')
+    const getByName = await DB.OS.findOne({ name: name }).select('_id')
     if(!!getByName) throw 'Tên danh mục đã tồn tại'
 
-    await DB.System.create(body)
+    await DB.OS.create(body)
     logAdmin(event, `Thêm hệ thống <b>${name}</b>`)
     
     return resp(event, { message: 'Thêm thành công' })

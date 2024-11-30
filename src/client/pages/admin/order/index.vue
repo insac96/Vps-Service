@@ -1,5 +1,5 @@
 <template>
-  <UiContent title="Order" sub="Quản lý giao dịch nạp tiền">
+  <UiContent title="Order" sub="Quản lý đơn hàng">
     <UiFlex class="mb-4">
       <USelectMenu v-model="page.size" :options="[5,10,20,50,100]" class="mr-2"/>
       <UForm :state="page" @submit="getList" class="mr-4">
@@ -36,16 +36,13 @@
         </template>
 
         <template #product-data="{ row }">
-          <UBadge variant="soft" color="gray" class="cursor-pointer" @click="viewProduct(row.product.key)">Xem</UBadge>
+          <UBadge variant="soft" color="red" class="cursor-pointer" @click="viewDetail(row._id)">Xem chi tiết</UBadge>
         </template>
 
         <template #money-data="{ row }">
           <UiText weight="semibold">{{ toMoney(row.money) }}</UiText>
         </template>
-        <template #number-data="{ row }">
-          <UiText weight="semibold">{{ row.number }} Tháng</UiText>
-        </template>
-
+      
         <template #status-data="{ row }">
           <UBadge :color="statusFormat[row.status].color" variant="soft">
             {{ statusFormat[row.status].label }}
@@ -63,9 +60,6 @@
           {{ row.verify_time ? useDayJs().displayFull(row.verify_time) : '...' }}
         </template>
         
-        <template #end_time-data="{ row }">
-          {{ row.status == 1 ? useDayJs().displayFull(row.end_time) : '...' }}
-        </template>
 
         <template #createdAt-data="{ row }">
           {{ useDayJs().displayFull(row.createdAt) }}
@@ -130,6 +124,26 @@
         </UiFlex>
       </UForm>
     </UModal>
+
+     <!-- Modal show product -->
+     <UModal v-model="modal.show" :ui="{ width: 'lg:max-w-4xl md:max-w-2xl sm:max-w-xl' }">
+      <UCard>
+        <UiText text="Danh sách" weight="semibold" size="base" class="pb-3" />
+        <div v-if="!!prd && prd.length > 0" class="p-4 border border-gray-200 dark:border-gray-800 rounded-lg">
+          <UTable :rows="prd" :columns="prdColumns" >
+            <template #money-data="{ row }">
+              {{ useMoney().toMoney(row.money) }} / {{ row.number }} Tháng
+            </template>
+            <template #end_time-data="{ row }">
+              {{ row.end_time ? useDayJs().displayFull(row.end_time) : '...' }}
+            </template>
+          </UTable>
+        </div>
+        <UiFlex justify="end" class="mt-4">
+          <UButton color="gray" @click="modal.show = false" class="ml-1">Đóng</UButton>
+        </UiFlex>
+      </UCard>
+    </UModal>
   </UiContent>
 </template>
 
@@ -139,6 +153,7 @@ const { toMoney } = useMoney()
 
 // List
 const list = ref([])
+const prd = ref([])
 
 // Columns
 const columns = [
@@ -157,14 +172,6 @@ const columns = [
   },{
     key: 'money',
     label: 'Số tiền',
-    sortable: true
-  },{
-    key: 'number',
-    label: 'Thời gian thuê',
-    sortable: true
-  },{
-    key: 'end_time',
-    label: 'Thời gian hết hạn',
     sortable: true
   },{
     key: 'status',
@@ -188,6 +195,24 @@ const columns = [
 ]
 const selectedColumns = ref([...columns])
 
+const prdColumns = [
+  {
+    key: 'product.name',
+    label: 'Tên sản phẩm',
+  }, {
+    key: 'server',
+    label: 'Tên máy chủ',
+  }, {
+    key: 'os.name',
+    label: 'Hệ điều hành',
+  }, {
+    key: 'money',
+    label: 'Giá thuê',
+  },{
+    key: 'quantity',
+    label: 'Số lượng',
+  },
+]
 // Page
 const page = ref({
   size: 10,
@@ -235,7 +260,8 @@ const modal = ref({
   refuse: false,
   waiting: false,
   user: false,
-  order: false
+  order: false,
+  show: false
 })
 
 // Loading
@@ -284,15 +310,20 @@ const actions = (row) => [
   }]
 ]
 
-  
-
 const viewOrder = (_id) => {
   stateOrder.value = _id
   modal.value.order = true
 }
 
-const viewProduct = (key) => {
-  window.open(`/product/${key}`, '_blank')
+const viewDetail = async (_id) => {
+  try {
+    const data = await useAPI('admin/order/detail', { _id })
+    prd.value = data
+    modal.value.show = true
+  }
+  catch (e) {
+    modal.value.show = false
+  }
 }
  
 // Fetch
@@ -327,7 +358,6 @@ const refuseAction = async () => {
   try {
     loading.value.refuse = true
     await useAPI('admin/order/verify', JSON.parse(JSON.stringify(stateRefuse.value)))
-
     loading.value.refuse = false
     modal.value.refuse = false
     getList()
@@ -341,7 +371,6 @@ const waitingAction = async () => {
   try {
     loading.value.waiting = true
     await useAPI('admin/order/verify', JSON.parse(JSON.stringify(stateWaiting.value)))
-
     loading.value.waiting = false
     modal.value.waiting = false
     getList()

@@ -23,11 +23,11 @@
         </template>
 
         <template #show-data="{ row }">
-          <UBadge class="cursor-pointer" variant="soft" color="primary" @click="viewSpecs(row.specs)">Xem</UBadge>
+          <UBadge class="cursor-pointer" variant="soft" color="red" @click="viewSpecs(row.specs)">Xem</UBadge>
         </template>
 
         <template #price-data="{ row }">
-          <UBadge class="cursor-pointer" variant="soft" color="primary" @click="viewPrice(row)">Xem</UBadge>
+          <UBadge class="cursor-pointer" variant="soft" color="red" @click="viewPrice(row)">Xem</UBadge>
         </template>
 
         <template #pin-data="{ row }">
@@ -272,11 +272,7 @@ const modal = ref({
   show: false
 });
 
-watch(
-  () => modal.value.add,
-  (val) =>
-    !val &&
-    (stateAdd.value = {
+watch(() => modal.value.add,(val) =>!val && (stateAdd.value = {
       category: null,
       name: null,
       specs: [

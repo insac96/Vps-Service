@@ -11,7 +11,9 @@
 </template>
 
 <script lang="ts" setup>
-
+definePageMeta({
+  middleware: 'auth'
+})
 const authStore = useAuthStore()
 const tab = ref(0)
 const items = [{

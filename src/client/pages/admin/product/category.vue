@@ -13,13 +13,14 @@
         <template #createdAt-data="{ row }">
           {{ useDayJs().displayFull(row.createdAt) }}
         </template>
+       
+
         <template #color-data="{ row }">
           <UBadge :color="row.color" variant="soft">{{ row.color }}</UBadge>
         </template>
         <template #updatedAt-data="{ row }">
           {{ useDayJs().displayFull(row.updatedAt) }}
         </template>
-
         <template #actions-data="{ row }">
           <UDropdown :items="actions(row)">
             <UButton color="gray" icon="i-bx-dots-horizontal-rounded" :disabled="loading.del" />
@@ -180,6 +181,8 @@ const loading = ref({
   edit: false,
   del: false
 })
+
+
 
 // Actions
 const actions = (row) => [

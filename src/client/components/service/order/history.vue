@@ -28,7 +28,8 @@
         </template>
 
         <template #product-data="{ row }">
-          <UBadge variant="soft" color="gray" class="cursor-pointer" @click="viewProduct(row.product.key)">Xem</UBadge>
+          <UBadge variant="soft" color="green" class="cursor-pointer" @click="viewProduct(row._id)">Xem chi tiết
+          </UBadge>
         </template>
 
         <template #money-data="{ row }">
@@ -37,7 +38,7 @@
         <template #number-data="{ row }">
           <UiText weight="semibold">{{ row.number }} Tháng</UiText>
         </template>
-        
+
         <template #end_time-data="{ row }">
           {{ row.status == 1 ? useDayJs().displayFull(row.end_time) : '...' }}
         </template>
@@ -92,6 +93,23 @@
         </UiFlex>
       </UForm>
     </UModal>
+
+    <!-- Modal show product -->
+    <UModal v-model="modal.show" :ui="{ width: 'lg:max-w-4xl md:max-w-2xl sm:max-w-xl' }">
+      <UCard>
+        <UiText text="Danh sách" weight="semibold" size="base" class="pb-3" />
+        <div v-if="!!prd && prd.length > 0" class="p-4 border border-gray-200 dark:border-gray-800 rounded-lg">
+          <UTable :rows="prd" :columns="prdColumns" >
+            <template #money-data="{ row }">
+              {{ useMoney().toMoney(row.money) }} / {{ row.number }} Tháng
+            </template>
+          </UTable>
+        </div>
+        <UiFlex justify="end" class="mt-4">
+          <UButton color="gray" @click="modal.show = false" class="ml-1">Đóng</UButton>
+        </UiFlex>
+      </UCard>
+    </UModal>
   </div>
 </template>
 
@@ -110,9 +128,11 @@ const loading = ref({
 const modal = ref({
   order: false,
   undo: false,
+  show: false
 })
 
 const list = ref([])
+const prd = ref([])
 
 const columns = [
   {
@@ -124,13 +144,6 @@ const columns = [
   }, {
     key: 'product',
     label: 'Sản phẩm',
-  }, {
-    key: 'number',
-    label: 'Thời gian thuê',
-  }, {
-    key: 'end_time',
-    label: 'Thời kết thúc',
-    sortable: true
   }, {
     key: 'status',
     label: 'Trạng thái',
@@ -149,6 +162,24 @@ const columns = [
     key: 'action',
     label: 'Hành động',
   }
+]
+const prdColumns = [
+  {
+    key: 'product.name',
+    label: 'Tên sản phẩm',
+  }, {
+    key: 'server',
+    label: 'Tên máy chủ',
+  }, {
+    key: 'os.name',
+    label: 'Hệ điều hành',
+  }, {
+    key: 'money',
+    label: 'Giá thuê',
+  },{
+    key: 'quantity',
+    label: 'Số lượng',
+  },
 ]
 
 const page = ref({
@@ -185,7 +216,7 @@ watch(() => page.value.range.end, (val) => {
 })
 
 const statusFormat = {
-  0: { label: 'Đang chờ', color: 'orange' },
+  0: { label: 'Chờ thanh toán', color: 'orange' },
   1: { label: 'Thành công', color: 'green' },
   2: { label: 'Từ chối', color: 'red' },
 }
@@ -208,8 +239,15 @@ const viewOrder = (_id) => {
   modal.value.order = true
 }
 
-const viewProduct = (key) => {
-  window.open(`/product/${key}`, '_blank')
+const viewProduct = async (_id) => {
+  try {
+    const data = await useAPI('client/order/detail', { _id })
+    prd.value = data
+    modal.value.show = true
+  }
+  catch (e) {
+    modal.value.show = false
+  }
 }
 
 const undoAction = async () => {

@@ -26,10 +26,8 @@ export const DBConfig = (mongoose : Mongoose) => {
     
     social: {
       fanpage: { type: String },
-      group: { type: String },
       messenger: { type: String },
       zalo: { type: String },
-      tiktok: { type: String },
       telegram: { type: String },
     },
 

@@ -9,11 +9,11 @@ export default defineEventHandler(async (event) => {
     const { _id } = await readBody(event)
     if(!_id) throw 'Dữ liệu đầu vào không hợp lệ'
 
-    const system = await DB.System.findOne({ _id: _id }).select('name')
-    if(!system) throw 'Thể loại trò chơi không tồn tại'
+    const os = await DB.OS.findOne({ _id: _id }).select('name')
+    if(!os) throw 'Thể loại trò chơi không tồn tại'
 
-    await DB.System.deleteOne({ _id: _id })
-    logAdmin(event, `Xóa thể loại trò chơi <b>${system.name}</b>`)
+    await DB.OS.deleteOne({ _id: _id })
+    logAdmin(event, `Xóa thể loại trò chơi <b>${os.name}</b>`)
     return resp(event, { message: 'Xóa thành công' })
   } 
   catch (e:any) {
