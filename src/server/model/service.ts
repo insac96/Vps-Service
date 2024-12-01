@@ -9,6 +9,7 @@ export const DBService = (mongoose : Mongoose) => {
       server: { type: String },
       quantity: { type: Number },
       number: { type: Number },
+      money: { type: Number },
       end_time: { type: Date },
       info: { type: Array },
       status: { type: Number , default: 0 },

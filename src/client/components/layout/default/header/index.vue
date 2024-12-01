@@ -1,5 +1,5 @@
 <template>
-  <UiFlex justify="between" class="
+  <UiFlex class="ju
     sticky top-0
     bg-white/75 dark:bg-transparent
     backdrop-blur-xl
@@ -7,16 +7,14 @@
     h-[var(--layout-default-header-size)] max-h-[var(--layout-default-header-size)]
     px-5
   ">
-    <!-- Left -->
-    <UiFlex class="mr-1">
-      <!-- Logo -->
-      <NuxtLink to="/"><UiLogo class="mr-4 md:flex"/></NuxtLink>
-      <!-- Nav Toogle -->
-      <!-- <LayoutDefaultNavToggle v-if="!!authStore.isLogin" class="mr-1"/> -->
-      <!-- Search -->
-    </UiFlex>
-    <!-- Right -->
-    <UiFlex>
+    <!-- Logo -->
+    <LayoutDefaultNavToggle class="mr-1" />
+    <NuxtLink to="/">
+      <UiLogo class="hidden mr-4 md:flex min-w-[160px]" />
+    </NuxtLink>
+    <!-- Nav Toogle -->
+    <UHorizontalNavigation class="hidden md:flex justify-center" :links="links" />
+    <UiFlex class="ml-auto">
       <!-- Auth -->
       <Auth />
     </UiFlex>
@@ -25,4 +23,30 @@
 
 <script setup>
 const authStore = useAuthStore()
+const links = [{
+  label: 'Trang chủ',
+  to: '/',
+  icon: 'i-heroicons-home',
+},
+{
+  label: 'Cửa hàng',
+  to: '/shop',
+  icon: 'material-symbols:store-outline',
+},
+{
+  label: 'Tin tức',
+  to: '/news',
+  icon: 'i-mdi-newspaper',
+},
+{
+  label: 'Giỏ hàng',
+  to: '/cart',
+  icon: 'i-material-symbols:shopping-cart',
+},
+
+{
+  label: 'dịch vụ',
+  to: '/service',
+  icon: 'material-symbols:home-repair-service',
+}]
 </script>

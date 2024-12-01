@@ -10,14 +10,20 @@ import { DBCategory } from './category'
 import { DBOrder, DBOrderDetail } from './order'
 import { DBOS } from './os'
 import { DBService } from './service'
+import { DBNews, DBNewsCategory } from './news'
 
 export default (mongoose : Mongoose) : IGlobalDB => {
   return {
     Config: DBConfig(mongoose),
     Gate: DBGate(mongoose),
+
+    News: DBNews(mongoose),
+    NewsCategory: DBNewsCategory(mongoose),
+
     User: DBUser(mongoose),
     UserTax: DBUserTax(mongoose),
     UserCart: DBUserCart(mongoose),
+    
     Product: DBProduct(mongoose),
     OS: DBOS(mongoose),
     Category: DBCategory(mongoose),

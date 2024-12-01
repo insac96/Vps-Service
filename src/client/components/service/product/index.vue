@@ -10,7 +10,8 @@
     <div v-for="option in category" :key="option.id" @click="page.category = option._id"
       :class="['grid col-span-6 md:col-span-2 h-28 flex flex-col justify-center items-center rounded-lg border relative cursor-pointer', option._id === page.category ? 'border-primary' : 'border-gray-200 dark:border-gray-600']">
       <div class="absolute top-2 right-2">
-        <svg v-if="option._id === page.category" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <svg v-if="option._id === page.category" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary"
+          fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
           <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
         </svg>
       </div>
@@ -87,9 +88,6 @@ const getProduct = async () => {
     loading.value.product = false
   }
 }
-onMounted(async () => {
-  await nextTick()
-  getCategory(),
-  getProduct()
-})
+getCategory()
+getProduct()
 </script>

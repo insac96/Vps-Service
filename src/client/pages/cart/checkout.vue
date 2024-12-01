@@ -1,7 +1,6 @@
 <template>
   <div>
-    <UBreadcrumb class="mb-3" divider="/"
-      :links="[{ label: 'Trang chủ', to: '/' }, { label: 'Giỏ hàng', to: '/cart' }, { label: 'Thanh toán' }]" />
+    <UBreadcrumb class="mb-3 mt-2" divider="/" :links="[{ label: 'Trang chủ', to: '/' }, { label: 'Giỏ hàng', to: '/cart' }, { label: 'Thanh toán' }]" />
     <div v-if="!!cartStore.cart && cartStore.cart.length > 0" class="mt-3">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-2">
         <div class="col-span-12 md:col-span-8 border border-gray-200 dark:border-gray-800 rounded-lg p-4">
@@ -39,15 +38,16 @@
             <UiFlex justify="between" class="mb-4">
               <UiText size="sm" color="gray" weight="semibold" mini>Số tiền</UiText>
               <UiFlex @click="startCopy(totalPrice)">
-                <UiText size="sm" weight="semibold" align="right" class="ml-4" pointer>{{  useMoney().toMoney(totalPrice) }}</UiText>
+                <UiText size="sm" weight="semibold" align="right" class="ml-4" pointer>{{ useMoney().toMoney(totalPrice)
+                  }}</UiText>
                 <UiIcon name="i-bx-copy-alt" color="primary" class="ml-2" pointer />
               </UiFlex>
             </UiFlex>
           </div>
           <div v-else>
-            <UiText text="Chưa có phương thức thanh toán" weight="semibold" size="base"/>
+            <UiText text="Chưa có phương thức thanh toán" weight="semibold" size="base" />
           </div>
-          <UFormGroup label="Ghi chú (tuỳ chọn)" >
+          <UFormGroup label="Ghi chú (tuỳ chọn)">
             <UTextarea v-model="state.note" placeholder="Ghi chú" class="mt-4" />
           </UFormGroup>
         </div>
@@ -85,9 +85,7 @@
 </template>
 
 <script lang="ts" setup>
-definePageMeta({
-  middleware: 'auth'
-})
+
 import { useClipboard } from "@vueuse/core";
 const { copy, isSupported } = useClipboard();
 const cartStore = useCartStore();

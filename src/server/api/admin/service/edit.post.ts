@@ -8,8 +8,7 @@ export default defineEventHandler(async (event) => {
 
     for (const item of info) {
       if (!item.ip || !item.password) throw 'Dữ liệu đầu vào không hợp lệ'
-      if (!/^\d+(\.\d+)?$/.test(item.ip)) throw 'Địa chỉ IP không hợp lệ'
-      if (!/^[a-zA-Z0-9!@#$%^&*_\-]{6,16}$/.test(item.password)) throw 'Mật khẩu vps không hợp lệ'
+      if (!/^((\d{1,3}\.){3}\d{1,3}|[0-9a-fA-F:]+)$/.test(item.ip)) throw 'Địa chỉ IP không hợp lệ'
     }
     const service = await DB.Service.findOne({ _id: _id })
 

@@ -1,21 +1,24 @@
 <template>
-    <UiContent title="Service" sub="Quản lý dịch vụ">
+    <UBreadcrumb class="mb-5" divider="/" :links="[{ label: 'Trang chủ', to: '/' }, { label: 'Dịch vụ' }]" />
+
         <UiFlex class="mb-4">
             <USelectMenu v-model="page.size" :options="[5, 10, 20, 50, 100]" class="mr-auto" />
             <UForm :state="page" @submit="getList" class="mr-1">
                 <UInput v-model="page.search.key" placeholder="Tìm kiếm..." icon="i-bx-search" size="sm" class="mr-1" />
             </UForm>
         </UiFlex>
-
         <!-- Table -->
         <UCard :ui="{ body: { padding: 'p-0 sm:p-0' } }">
             <LoadingTable v-if="loading.load" />
             <UTable v-model:sort="page.sort" :columns="selectedColumns" :rows="list">
-                <template #createdAt-data="{ row }">
-                    {{ useDayJs().displayFull(row.createdAt) }}
-                </template>
+
                 <template #product.name-data="{ row }">
-                   <UBadge variant="soft" color="primary" class="cursor-pointer" @click="router.push(`/service/${row._id}`)" >{{ row.product.name }}</UBadge>    
+                    <UBadge variant="soft" color="primary" class="cursor-pointer"
+                        @click="router.push(`/service/${row._id}`)">{{ row.product.name }}</UBadge>
+                </template>
+                <template #action-data="{ row }">
+                    <UBadge variant="soft" color="red" class="cursor-pointer"
+                        @click="router.push(`/service/${row._id}`)">Xem</UBadge>
                 </template>
                 <template #status-data="{ row }">
                     <UBadge :color="statusFormat[row.status].color" variant="soft">
@@ -30,8 +33,8 @@
                     {{ row.end_time ? useDayJs().displayFull(row.end_time) : '...' }}
                 </template>
 
-                <template #updatedAt-data="{ row }">
-                    {{ useDayJs().displayFull(row.updatedAt) }}
+                <template #createdAt-data="{ row }">
+                    {{ useDayJs().displayFull(row.createdAt) }}
                 </template>
             </UTable>
         </UCard>
@@ -40,10 +43,10 @@
             <USelectMenu v-model="selectedColumns" :options="columns" multiple placeholder="Chọn cột" />
             <UPagination v-model="page.current" :page-count="page.size" :total="page.total" :max="4" />
         </UiFlex>
-    </UiContent>
 </template>
 
 <script setup>
+
 // List
 const list = ref([]);
 const router = useRouter();
@@ -51,7 +54,7 @@ const router = useRouter();
 const columns = [
     {
         key: "product.name",
-        label: "Tên VPS",
+        label: "Gói đăng ký",
     },
     {
         key: "os.name",
@@ -74,6 +77,10 @@ const columns = [
         key: "quantity",
         label: "Số lượng",
         sortable: true
+    },
+    {
+        key: "action",
+        label: "Thông tin gói",
     },
     
 ];

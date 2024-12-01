@@ -55,6 +55,7 @@ export default defineEventHandler(async (event) => {
                 os: item.os,
                 number: item.option.number,
                 server: item.server,
+                money: item.option.price,
                 quantity: item.quantity,
                 status: 0,
             });

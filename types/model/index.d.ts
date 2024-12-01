@@ -5,6 +5,7 @@ import type { IDBOrder, IDBOrderDetail } from './order'
 import type { IDBUser, IDBUserCart, IDBUserTax } from './user'
 import type { IDBOS } from './os'
 import type { IDBService } from './service'
+import type { IDBNews, IDBNewsCategory } from './news'
 export { IDBConfig, IDBConfigStore } from './config'
 export { IDBUser, IDBUserStore } from './user'
 export { IDBGate } from './gate'
@@ -16,7 +17,10 @@ export interface IGlobalDB {
   User: Model<IDBUser>
   UserTax: Model<IDBUserTax>
   UserCart: Model<IDBUserCart>
-  
+
+  News: Model<IDBNews>
+  NewsCategory: Model<IDBNewsCategory>
+
   Gate: Model<IDBGate>
   Category: Model<IDBCategory>
   Product: Model<IDBProduct>

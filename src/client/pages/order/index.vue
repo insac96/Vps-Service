@@ -1,12 +1,9 @@
 <template>
-  <UiContent title="Order" sub="Danh sách đơn hàng">
-    <ServiceOrderHistory/>
-  </UiContent>
+  <UBreadcrumb class="mb-5 mt-2" divider="/" :links="[{ label: 'Trang chủ', to: '/' }, { label: 'Đơn hàng' }]" />
+  <ServiceOrderHistory />
 </template>
 
 <script lang="ts" setup>
- const authStore = useAuthStore()
- definePageMeta({
-  middleware: 'auth'
-})
+const authStore = useAuthStore()
+
 </script>
