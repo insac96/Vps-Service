@@ -1,6 +1,6 @@
 <template>
   <UiContent title="Statistic" sub="Quản lý thống kê">
-    <UTabs :items="items" @change="onChange" class="max-w-[500px] my-4" />
+    <!-- <UTabs :items="items" @change="onChange" class="max-w-[500px] my-4" /> -->
     <div class="grid grid-cols-1 gap-4 md:gap-2 md:grid-cols-4">
       <UiFlex class="sm:p-6 px-4 md:px-8 py-6 md:py-8 border border-gray-200 dark:border-gray-800 rounded-lg"
         justify="between">
