@@ -49,7 +49,6 @@ const get = async () => {
     send.category = props.category
     loading.value = true
     const data = await useAPI('client/news/list', send)
-
     list.value = data.list
     page.value.total = data.total
     loading.value = false

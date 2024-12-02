@@ -50,13 +50,6 @@
                 <UiIcon name="i-bx-copy-alt" color="primary" class="ml-2" pointer />
               </UiFlex>
             </UiFlex>
-            <UiFlex justify="between" class="mb-4">
-              <UiText size="sm" color="gray" weight="semibold" mini>Nội dung</UiText>
-              <UiFlex @click="startCopy(state.code)">
-                <UiText size="sm" weight="semibold" align="right" class="ml-4" pointer>{{ state.code }}</UiText>
-                <UiIcon name="i-bx-copy-alt" color="primary" class="ml-2" pointer />
-              </UiFlex>
-            </UiFlex>
           </div>
           <div v-else>
             <UiText text="Chưa có phương thức thanh toán" weight="semibold" size="base" />

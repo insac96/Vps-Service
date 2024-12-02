@@ -25,8 +25,6 @@ export default (mongoose : Mongoose) : IGlobalDB => {
     UserCart: DBUserCart(mongoose),
     
     Product: DBProduct(mongoose),
-    News: DBNews(mongoose),
-    NewsCategory: DBNewsCategory(mongoose),
     OS: DBOS(mongoose),
     Category: DBCategory(mongoose),
     Order: DBOrder(mongoose),

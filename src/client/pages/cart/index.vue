@@ -41,7 +41,8 @@
               </UiFlex>
             </div>
           </UiFlex>
-          <NuxtLink href="/shop" class="btn btn-primary w-full mt-3 text-end block hover:underline text-primary" size="md">
+          <NuxtLink href="/shop" class="btn btn-primary w-full mt-3 text-end block hover:underline text-primary"
+            size="md">
             Chọn thêm dịch vụ khác</NuxtLink>
         </div>
         <div class="col-span-12 md:col-span-4 border border-gray-200 dark:border-gray-800 rounded-lg p-4 h-fit">
@@ -90,12 +91,8 @@
         </UForm>
       </UModal>
     </div>
-    <div v-if="!authStore.isLogin">
-      <UiAuth title="Vui lòng đăng nhập"/>
-    </div>
-    <div v-if="!cartStore.cart || cartStore.cart.length === 0 && authStore.isLogin">
-      <UiEmpty class="mt-32" title="Giỏ hàng rỗng" />
-    </div>
+    <UiAuth v-if="!authStore.isLogin" title="Vui lòng đăng nhập" />
+    <UiEmpty v-if="cartStore.cart && cartStore.cart.length === 0 && authStore.isLogin" class="mt-32" title="Giỏ hàng rỗng" />
   </div>
 </template>
 
