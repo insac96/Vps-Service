@@ -4,15 +4,17 @@
       <UForm :state="page" @submit="get" class="mr-1">
         <UInput v-model="page.search.key" placeholder="Tìm kiếm..." icon="i-bx-search" size="sm" class="mr-1" />
       </UForm>
-      <USelectMenu v-model="page.category" :options="[{ name: 'Tất cả', _id: '' }, ...category]" placeholder="Danh mục" size="md" option-attribute="name" />
+      <USelectMenu v-model="page.category" :options="[{ name: 'Tất cả', _id: '' }, ...category]" placeholder="Danh mục"
+        size="md" option-attribute="name" />
     </UiFlex>
     <div class="grid grid-cols-12 lg:gap-6 md:gap-4 gap-2" v-if="!!loading || !list">
       <LoadingProductBox v-for="i in page.size" :key="i" class="xl:col-span-3 lg:col-span-4 col-span-6" />
     </div>
     <div v-else>
       <UiEmpty v-if="list.length == 0" title="Hiện tại chưa có dữ liệu" />
-      <div class="grid grid-cols-12 lg:gap-6 md:gap-4 gap-2 md:mb-6 mb-4" v-else>
-        <ServiceProductBox v-for="product in list" :key="product._id" :product="product" class="xl:col-span-3 lg:col-span-4 col-span-6" />
+      <div class="grid grid-cols-1 lg:grid-cols-12 lg:gap-6 md:gap-4 gap-2 md:mb-6 mb-4 " v-else>
+        <ServiceProductBox v-for="product in list" :key="product._id" :product="product"
+          class="xl:col-span-3 lg:col-span-4 col-span-6" />
       </div>
       <UiFlex justify="center" v-if="list.length < page.total">
         <UPagination v-model="page.current" :page-count="page.size" :total="page.total" :max="5" show-last show-first />

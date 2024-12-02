@@ -8,4 +8,8 @@
 </template>
 
 <script setup>
+useSeoMeta({
+  title: () => "Trang chủ - ENI",
+  ogTitle: () => "Trang chủ - ENI",
+})
 </script>

@@ -3,3 +3,5 @@
         <UiText size="sm" color="gray">© 2024 ENI VPS SERVICE. All rights reserved.</UiText>
     </div>
 </template>
+<script setup>
+</script>

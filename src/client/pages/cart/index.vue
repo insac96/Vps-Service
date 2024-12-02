@@ -90,15 +90,19 @@
       </UModal>
     </div>
     <div v-if="!authStore.isLogin">
-      <UiAuth title="Vui lòng đăng nhập trưóc"/>
+      <UiAuth title="Vui lòng đăng nhập"/>
     </div>
     <div v-if="!cartStore.cart || cartStore.cart.length === 0 && authStore.isLogin">
-      <UiEmpty class="mt-20" title="Giỏ hàng rỗng" />
+      <UiEmpty class="mt-32" title="Giỏ hàng rỗng" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
+useSeoMeta({
+  title: () => "Giỏ hàng - ENI",
+  ogTitle: () => "Giỏ hàng - ENI"
+})
 const cartStore = useCartStore();
 const authStore = useAuthStore();
 const router = useRouter();

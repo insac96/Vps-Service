@@ -7,5 +7,8 @@
 
 <script setup>
 const configStore = useConfigStore()
-
+useSeoMeta({
+  title: () => "Tin tức - ENI",
+  ogTitle: () => "Tin tức - ENI",
+})
 </script>

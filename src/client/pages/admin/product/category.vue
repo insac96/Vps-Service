@@ -48,14 +48,7 @@
             </template>
           </UiUploadImage>
         </UFormGroup>
-        <UFormGroup label="Màu sắc" class="mt-4">
-          <USelectMenu class="w-full" size="lg" v-model="stateAdd.color" :options="colors" item-value="value">
-            <template #option="{ option: person }">
-              <span class="rounded-full w-3 h-3 mr-2" :style="{ backgroundColor: person.value }" />
-              <span class="truncate">{{ person.label }}</span>
-            </template>
-          </USelectMenu>
-        </UFormGroup>
+        
         <UiFlex justify="end" class="mt-6">
           <UButton type="submit" :loading="loading.add">Thêm</UButton>
           <UButton color="gray" @click="modal.add = false" :disabled="loading.add" class="ml-1">Đóng</UButton>
@@ -75,14 +68,6 @@
               <UInput :model-value="stateEdit.image" :loading="loading" readonly @click="select" />
             </template>
           </UiUploadImage>
-        </UFormGroup>
-        <UFormGroup label="Màu sắc" class="mt-4">
-          <USelectMenu class="w-full" size="lg" v-model="stateEdit.color" :options="colors" item-value="value">
-            <template #option="{ option: person }">
-              <span class="rounded-full w-3 h-3 mr-2" :style="{ backgroundColor: person.value }" />
-              <span class="truncate">{{ person.label}}</span>
-            </template>
-          </USelectMenu>
         </UFormGroup>
         <UiFlex justify="end" class="mt-6">
           <UButton type="submit" :loading="loading.edit">Sửa</UButton>
@@ -108,9 +93,6 @@ const columns = [
     sortable: true
   }, 
   {
-    key: 'color',
-    label: 'Màu sắc',
-  },{
     key: 'createdAt',
     label: 'Ngày tạo',
     sortable: true
@@ -123,16 +105,6 @@ const columns = [
     label: 'Chức năng',
   }
 ]
-const colors = ref([
-  { label: 'Red', value: 'red' },
-  { label: 'Green', value: 'green' },
-  { label: 'Blue', value: 'blue' },
-  { label: 'Yellow', value: 'yellow' },
-  { label: 'Orange', value: 'orange' },
-  { label: 'Purple', value: 'purple' },
-  { label: 'Gray', value: 'gray' },
-  { label: 'Black', value: 'black' }
-])
 const selectedColumns = ref([...columns])
 
 // Page
@@ -154,13 +126,11 @@ watch(() => page.value.sort.direction, () => getList())
 const stateAdd = ref({
   name: null,
   image: null,
-  color: 'Chọn màu'
 })
 const stateEdit = ref({
   _id: null,
   name: null,
   image: null,
-  color: 'Chọn màu'
 })
 
 // Modal
@@ -171,7 +141,6 @@ const modal = ref({
 
 watch(() => modal.value.add, (val) => !val && (stateAdd.value = {
   name: null,
-  color: null
 }))
 
 // Loading

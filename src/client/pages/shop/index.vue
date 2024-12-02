@@ -6,4 +6,8 @@
 </template>
 
 <script lang="ts" setup>
+useSeoMeta({
+  title: () => "Cửa hàng - ENI",
+  ogTitle: () => "Cửa hàng - ENI",
+})
 </script>

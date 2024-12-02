@@ -43,6 +43,13 @@
                 <UiIcon name="i-bx-copy-alt" color="primary" class="ml-2" pointer />
               </UiFlex>
             </UiFlex>
+            <UiFlex justify="between" class="mb-4">
+              <UiText size="sm" color="gray" weight="semibold" mini>Nội dung</UiText>
+              <UiFlex @click="startCopy(state.code)">
+                <UiText size="sm" weight="semibold" align="right" class="ml-4" pointer>{{ state.code }}</UiText>
+                <UiIcon name="i-bx-copy-alt" color="primary" class="ml-2" pointer />
+              </UiFlex>
+            </UiFlex>
           </div>
           <div v-else>
             <UiText text="Chưa có phương thức thanh toán" weight="semibold" size="base"/>
@@ -85,6 +92,10 @@
 </template>
 
 <script lang="ts" setup>
+useSeoMeta({
+  title: () => "Thanh toán - ENI",
+  ogTitle: () => "Thanh toán - ENI"
+})
 import { useClipboard } from "@vueuse/core";
 const { copy, isSupported } = useClipboard();
 const authStore = useAuthStore();
@@ -95,7 +106,8 @@ const list = ref<any>([]);
 const state = ref<any>({
   index: 0,
   note: null,
-  gate: undefined
+  gate: undefined,
+  code: "ORDER-" + Math.random().toString(36).substring(2, 7).toUpperCase(),
 })
 const totalPrice = computed(() => {
   return cartStore?.cart?.reduce((total: number, item: any) => {
@@ -113,7 +125,7 @@ const getOption = (item: any, index: number) => {
 };
 const checkout = async () => {
   try {
-    const data = JSON.stringify({ note: state.value.note, gate: state.value.gate._id})
+    const data = JSON.stringify(state.value)
     await cartStore.checkout(data)
     router.push('/order')
   }

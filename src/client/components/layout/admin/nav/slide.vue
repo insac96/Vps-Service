@@ -25,7 +25,6 @@
             <UiLogo @click="open = false" />
           </NuxtLink>
         </UiFlex>
-
         <LayoutAdminNav @to="open = false"/>
       </UCard>
     </USlideover>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <header class="header">
+    <header class="header relative">
       <LayoutDefaultHeader />
     </header>
     <main class="pt-[var(--layout-default-header-size)] min-h-[calc(100vh-var(--layout-default-header-size))]">
@@ -8,6 +8,7 @@
         <slot></slot>
       </UContainer>
     </main>
+    <LayoutDefaultSupport />
     <footer class="mt-auto">
       <LayoutDefaultFooter />
     </footer>
@@ -16,7 +17,6 @@
 
 <script setup>
 const authStore = useAuthStore()
-
 </script>
 
 <style lang="sass">
@@ -29,10 +29,6 @@ const authStore = useAuthStore()
   left: 0
   width: 100%
   z-index: 1
-
-  nav
-    grid-area: nav
-    left: var(--layout-nav-reponsize)
 
   main
     position: relative

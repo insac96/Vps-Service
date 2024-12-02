@@ -6,5 +6,9 @@
 </template>
 
 <script lang="ts" setup>
+useSeoMeta({
+  title: () => "Đơn hàng - ENI",
+  ogTitle: () => "Đơn hàng - ENI"
+})
  const authStore = useAuthStore()
 </script>

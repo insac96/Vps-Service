@@ -9,8 +9,10 @@ export default defineEventHandler(async (event) => {
     const service = await DB.Service.findOne({ _id: _id })
       .populate({ path: 'product', select: 'name' })
       .populate({ path: 'os', select: 'name' })
+      .populate({ path: 'order', populate: { path: 'gate', select: 'name person number' } })
     if (!service) throw 'Không tìm thấy dịch vụ'
-
+    console.log(service);
+    
     return resp(event, { result: service })
   } catch (error) {
     console.error(error)

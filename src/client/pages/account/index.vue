@@ -12,6 +12,10 @@
 </template>
 
 <script lang="ts" setup>
+useSeoMeta({
+  title: () => "Tài khoản - ENI",
+  ogTitle: () => "Tài khoản - ENI"
+})
 const authStore = useAuthStore()
 const tab = ref(0)
 const items = [{

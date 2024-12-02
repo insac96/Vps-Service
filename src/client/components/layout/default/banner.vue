@@ -73,7 +73,7 @@
         </div>
       </UiFlex>
       <!-- About -->
-      <UButton class="mt-6" size="md">Xem Thêm</UButton>
+      <UButton class="mt-6" @click="router.push('/shop')" size="md">Xem Thêm</UButton>
     </UiFlex>
   </div>
 </template>
@@ -81,6 +81,7 @@
 <script setup>
 const banner = ref(undefined)
 const loading = ref(true)
+const router = useRouter()
 const getBanner = async () => {
   try {
     const data = await useAPI('client/config/banner')

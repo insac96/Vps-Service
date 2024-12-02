@@ -1,50 +1,38 @@
 <template>
-  <UiFlex type="col" class="space-y-4 " v-if="menus">
-    <div v-for="(menu, index) in menus" :key="index">
-      <UiText :text="menu.name" size="sm" color="gray" class="my-2 px-1" />
-      <UButton 
-        v-for="(item, i) in menu.child" :key="i"
-        :icon="item.icon"
-        :label="item.label"
-        @click="item.click"
-        class="w-full"
-        variant="ghost"
-        color="gray"
-        :ui="{
-          icon: { base: 'mr-2' }
-        }"
-      ></UButton>
-    </div> 
+  <UiFlex type="col" class="space-y-4 w-full">
+    <UVerticalNavigation :links="links" />
   </UiFlex>
 </template>
 
 <script setup>
-const menus = ref(undefined)
-
-const list = [{
-  child: [{
-    label: 'Trang chủ',
-    icon: 'i-mdi-home',
-    click: () => navigateTo('/')
-  },{
-    label: 'Cửa hàng',
-    icon: 'material-symbols:shopping-bag-outline',
-    click: () => navigateTo('/shop')
-  },{
-    label: 'Dịch vụ',
-    icon: 'ic:twotone-miscellaneous-services',
-    click: () => navigateTo('/service')
-  },{
-    label: 'Đơn hàng',
-    icon: 'material-symbols:shopping-cart',
-    click: () => navigateTo('/order')
-  },
-  {
-    label: 'Quản lý tài khoản',
-    icon: 'i-bxs-user',
-    click: () => navigateTo('/account')
-  }]
+const links = [{
+  label: 'Trang chủ',
+  icon: 'i-heroicons-home',
+  to: '/'
+},
+{
+  label: 'Cửa hàng',
+  icon: 'material-symbols:store-outline',
+  to: '/shop'
+},
+{
+  label: 'Tin tức',
+  icon: 'i-mdi-newspaper',
+  to: '/news'
+},
+{
+  label: 'Dịch vụ',
+  icon: 'material-symbols:home-repair-service',
+  to: '/service'
+},
+{
+  label: 'Tài khoản',
+  icon: 'i-bxs-user',
+  to: '/account'
 }]
-menus.value = list
-
 </script>
+<style lang="scss" scoped>
+  nav {
+    width: 100% !important;
+  }
+</style>

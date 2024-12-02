@@ -45,11 +45,15 @@
                 <UPagination v-model="page.current" :page-count="page.size" :total="page.total" :max="4" />
             </UiFlex>
         </div>
-        <UiAuth v-else title="Vui lòng đăng nhập trưóc" />
+        <UiAuth v-else title="Vui lòng đăng nhập" />
     </div>
 </template>
 
 <script setup>
+useSeoMeta({
+  title: () => "Dịch vụ - ENI",
+  ogTitle: () => "Dịch vụ - ENI"
+})
 // List
 const list = ref([]);
 const router = useRouter();

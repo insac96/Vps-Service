@@ -10,7 +10,7 @@
     </div>
 
     <div v-else>
-      <UiEmpty  v-if="list.length == 0" title="Hiện tại chưa có dữ liệu" />
+      <UiEmpty class="mt-32" v-if="list.length == 0" title="Hiện tại chưa có dữ liệu" />
 
       <div class="grid grid-cols-12 lg:gap-6 md:gap-4 gap-2 md:mb-6 mb-4" v-else>
         <ServiceNewsBox v-for="news in list" :key="news._id" :news="news"

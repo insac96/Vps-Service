@@ -5,8 +5,8 @@ export default defineEventHandler(async (event) => {
         if (!user) throw "Vui lòng đăng nhập trước trước";
 
         const body = await readBody(event);
-        const { note, gate } = body;
-        if (!gate) throw "Dữ liệu đầu vào không hợp lệ";
+        const { note, gate, code } = body;
+        if (!gate || !code) throw "Dữ liệu đầu vào không hợp lệ";
 
         const gateSelect = (await DB.Gate.findOne({ _id: gate }).select("name number person type key qrcode callback display").populate({ path: 'product', select: '_id name', strictPopulate: false })) as IDBGate;
         if (!gateSelect) throw "Kênh nạp không tồn tại";
@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
 
         const order = await DB.Order.create({
             user: user._id,
-            code: "ORDER-" + Math.random().toString(36).substring(2, 7).toUpperCase(),
+            code: code,
             gate: gate,
             note: note,
             money: parseInt(String(total)),
@@ -62,7 +62,7 @@ export default defineEventHandler(async (event) => {
         await DB.UserCart.deleteMany({ user: user._id });
         return resp(event, { message: "Tạo giao dịch thành công", result: 2 });
     } catch (e: any) {
-        return resp(event, { code: 500, message: e.toString() });
+        return resp(event, { code: 400, message: e.toString() });
     }
 });
 

@@ -14,7 +14,15 @@ export default async (event: H3Event, throwError : boolean = true) : Promise<IAu
     
     if(!user) throw 'Xác thực tài khoản không thành công'
     if(user.token != token) throw 'Tài khoản đang đăng nhập ở nơi khác, Vui lòng đăng nhập trước lại'
-    
+
+    // check dịch vụ hết hạn
+    const now = Date.now();
+    const services = await DB.Service.find({ user: user._id, status: 1 });
+    for (const service of services) {
+      if(new Date(service.end_time).getTime() < now) {
+        await DB.Service.updateOne({ _id: service._id }, { status: 2 });
+      }
+    }
     const result = { 
       _id: user._id,
       account: user.account,

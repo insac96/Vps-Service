@@ -90,6 +90,10 @@ const loading = ref(false);
 const product = ref<any>({});
 const modal = ref(false);
 
+useSeoMeta({
+  title: "Sản phẩm - ENI",
+  ogTitle: "Sản phẩm - ENI"
+})
 // state
 const state = ref<any>({
   key: route.params.key,

@@ -26,7 +26,7 @@ export default defineEventHandler(async (event) => {
       }
       if(search.by == 'LOG'){ match['action'] = { $regex : search.key.toLowerCase(), $options : 'i' } }
     }
-
+    
     const list = await DB.LogAdmin
     .find(match)
     .select('user action createdAt')

@@ -1,18 +1,10 @@
 <template>
-  <div class="p-3">
-    <UAlert color="primary" title="Bạn cần trợ giúp ?">
-      <template #title>
-        <UiFlex>
-          <UiIcon name="i-bxs-help-circle" size="4" class="mr-1" />
-          <UiText size="0.8rem" weight="semibold">Bạn cần trợ giúp?</UiText>
-        </UiFlex>
-      </template>
-      
-      <template #description>
-        <UButton color="gray" size="xs" block class="mt-2" @click="modal = true">Liên Hệ Chúng Tôi</UButton>
-      </template>
-    </UAlert>
-
+  <div>
+    <UTooltip @click="modal = true"
+      class="fixed bottom-6 cursor-pointer right-4 dark:bg-primary border border-primary-200 dark:border-primary-800 rounded-full p-3 flex items-center justify-center transition-transform transform hover:scale-110"
+      text="Liên hệ hỗ trợ" :popper="{ placement: 'top' }">
+      <UIcon size="20" name="material-symbols:chat" />
+    </UTooltip>
     <UModal v-model="modal">
       <UCard>
           <UiFlex class="mb-6">
@@ -55,13 +47,13 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const configStore = useConfigStore()
+configStore.bootConfig()
 const contact = ref(configStore.config.contact)
 const social = ref(configStore.config.social)
 const modal = ref(false)
-  
-const open = (url) => {
+const open = (url: any) => {
   if(!url) return useNotify().error('Chúng tôi đang cập nhật thông tin, vui lòng quay lại sau')
   window.open(url, '_blank')
 }
