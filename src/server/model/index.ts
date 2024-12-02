@@ -10,6 +10,7 @@ import { DBCategory } from './category'
 import { DBOrder, DBOrderDetail } from './order'
 import { DBOS } from './os'
 import { DBService } from './service'
+import { DBNews, DBNewsCategory } from './news'
 
 export default (mongoose : Mongoose) : IGlobalDB => {
   return {
@@ -19,6 +20,8 @@ export default (mongoose : Mongoose) : IGlobalDB => {
     UserTax: DBUserTax(mongoose),
     UserCart: DBUserCart(mongoose),
     Product: DBProduct(mongoose),
+    News: DBNews(mongoose),
+    NewsCategory: DBNewsCategory(mongoose),
     OS: DBOS(mongoose),
     Category: DBCategory(mongoose),
     Order: DBOrder(mongoose),

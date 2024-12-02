@@ -3,7 +3,6 @@
     <header class="header">
       <LayoutDefaultHeader />
     </header>
-
     <main class="pt-[var(--layout-default-header-size)] min-h-[calc(100vh-var(--layout-default-header-size))]">
       <UContainer class="p-2">
         <slot></slot>
@@ -24,8 +23,6 @@ const authStore = useAuthStore()
 :root
   --layout-default-header-size: 3.5rem
   --layout-default-nav-size: 250px
-
-
 .header
   position: fixed
   top: 0
@@ -34,14 +31,8 @@ const authStore = useAuthStore()
   z-index: 1
 
   nav
-    position: fixed
-    top: 0
-    height: 100%
-
-  nav
     grid-area: nav
     left: var(--layout-nav-reponsize)
-    width: var(--layout-default-nav-size)
 
   main
     position: relative

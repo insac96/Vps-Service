@@ -13,7 +13,7 @@
                 <UiText size="sm" color="gray" weight="">{{ product?.category?.name || "..." }}</UiText>
                 <UiText size="sm" weight="semibold" class="mt-2">{{ product?.name || "..." }}</UiText>
               </div>
-              <UButton color="primary" size="sm" @click="router.push('/')">
+              <UButton color="primary" size="sm" @click="router.push('/shop')">
                 <UiText size="sm" weight="semibold">Thay đổi</UiText>
               </UButton>
             </UiFlex>
@@ -83,9 +83,6 @@
 </template>
 
 <script lang="ts" setup>
-definePageMeta({
-  middleware: 'auth'
-})
 const router = useRouter();
 const { setCart } = useCartStore();
 const route = useRoute();

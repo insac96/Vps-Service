@@ -16,6 +16,6 @@ export default defineEventHandler(async (event) => {
 
     return resp(event, { result: true, message: "Thêm thành công" });
   } catch (error) {
-    return resp(event, { code: 401, message: error.toString() });
+    return resp(event, { code: 400, message: error.toString() });
   }
 });

@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     return resp(event, { result: service })
   } catch (error) {
     console.error(error)
-    return resp(event, { code: 400, message: error?.toString() || 'L i xử lý chưa rõ, vui lòng th  nghi n' })
+    return resp(event, { code: 400, message: error?.toString()})
   }
 })
 

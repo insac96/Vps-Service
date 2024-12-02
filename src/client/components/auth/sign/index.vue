@@ -57,12 +57,6 @@ const menu = computed(() => {
   }])
 
   list.push([{
-    label: 'Dịch vụ',
-    icon: 'material-symbols:home-repair-service',
-    click: () => navigateTo('/service')
-  }])
-
-  list.push([{
     label: 'Đơn hàng',
     icon: 'i-bx-history',
     click: () => navigateTo('/order')

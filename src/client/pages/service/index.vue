@@ -1,52 +1,60 @@
 <template>
-    <UiContent title="Service" sub="Quản lý dịch vụ">
-        <UiFlex class="mb-4">
-            <USelectMenu v-model="page.size" :options="[5, 10, 20, 50, 100]" class="mr-auto" />
-            <UForm :state="page" @submit="getList" class="mr-1">
-                <UInput v-model="page.search.key" placeholder="Tìm kiếm..." icon="i-bx-search" size="sm" class="mr-1" />
-            </UForm>
-        </UiFlex>
+    <div>
+        <UBreadcrumb class="mb-5" divider="/" :links="[{ label: 'Trang chủ', to: '/' }, { label: 'Dịch vụ' }]" />
+        <div v-if="!!authStore.isLogin">
+            <UiFlex class="mb-4">
+                <USelectMenu v-model="page.size" :options="[5, 10, 20, 50, 100]" class="mr-auto" />
+                <UForm :state="page" @submit="getList" class="mr-1">
+                    <UInput v-model="page.search.key" placeholder="Tìm kiếm..." icon="i-bx-search" size="sm"
+                        class="mr-1" />
+                </UForm>
+            </UiFlex>
 
-        <!-- Table -->
-        <UCard :ui="{ body: { padding: 'p-0 sm:p-0' } }">
-            <LoadingTable v-if="loading.load" />
-            <UTable v-model:sort="page.sort" :columns="selectedColumns" :rows="list">
-                <template #createdAt-data="{ row }">
-                    {{ useDayJs().displayFull(row.createdAt) }}
-                </template>
-                <template #product.name-data="{ row }">
-                   <UBadge variant="soft" color="primary" class="cursor-pointer" @click="router.push(`/service/${row._id}`)" >{{ row.product.name }}</UBadge>    
-                </template>
-                <template #status-data="{ row }">
-                    <UBadge :color="statusFormat[row.status].color" variant="soft">
-                        {{ statusFormat[row.status].label }}
-                    </UBadge>
-                </template>
-                <template #number-data="{ row }">
-                    {{ row.number || '...' }} Tháng
-                </template>
+            <!-- Table -->
+            <UCard :ui="{ body: { padding: 'p-0 sm:p-0' } }">
+                <LoadingTable v-if="loading.load" />
+                <UTable v-model:sort="page.sort" :columns="selectedColumns" :rows="list">
+                    <template #createdAt-data="{ row }">
+                        {{ useDayJs().displayFull(row.createdAt) }}
+                    </template>
+                    <template #product.name-data="{ row }">
+                        <UBadge variant="soft" color="primary" class="cursor-pointer"
+                            @click="router.push(`/service/${row._id}`)">{{ row.product.name }}</UBadge>
+                    </template>
+                    <template #status-data="{ row }">
+                        <UBadge :color="statusFormat[row.status].color" variant="soft">
+                            {{ statusFormat[row.status].label }}
+                        </UBadge>
+                    </template>
+                    <template #number-data="{ row }">
+                        {{ row.number || '...' }} Tháng
+                    </template>
 
-                <template #end_time-data="{ row }">
-                    {{ row.end_time ? useDayJs().displayFull(row.end_time) : '...' }}
-                </template>
+                    <template #end_time-data="{ row }">
+                        {{ row.end_time ? useDayJs().displayFull(row.end_time) : '...' }}
+                    </template>
 
-                <template #updatedAt-data="{ row }">
-                    {{ useDayJs().displayFull(row.updatedAt) }}
-                </template>
-            </UTable>
-        </UCard>
-        <!-- Pagination -->
-        <UiFlex justify="between" class="py-4">
-            <USelectMenu v-model="selectedColumns" :options="columns" multiple placeholder="Chọn cột" />
-            <UPagination v-model="page.current" :page-count="page.size" :total="page.total" :max="4" />
-        </UiFlex>
-    </UiContent>
+                    <template #updatedAt-data="{ row }">
+                        {{ useDayJs().displayFull(row.updatedAt) }}
+                    </template>
+                </UTable>
+            </UCard>
+            <!-- Pagination -->
+            <UiFlex justify="between" class="py-4">
+                <USelectMenu v-model="selectedColumns" :options="columns" multiple placeholder="Chọn cột" />
+                <UPagination v-model="page.current" :page-count="page.size" :total="page.total" :max="4" />
+            </UiFlex>
+        </div>
+        <UiAuth v-else title="Vui lòng đăng nhập trưóc" />
+    </div>
 </template>
 
 <script setup>
 // List
 const list = ref([]);
 const router = useRouter();
+const authStore = useAuthStore();
+
 // Columns
 const columns = [
     {
@@ -70,12 +78,6 @@ const columns = [
         label: "Thời gian thuê",
         sortable: true
     },
-    {
-        key: "quantity",
-        label: "Số lượng",
-        sortable: true
-    },
-    
 ];
 const selectedColumns = ref([...columns]);
 
@@ -122,7 +124,7 @@ watch(() => modal.value.edit, (val) => !val &&
 
 // Loading
 const loading = ref({
-    load: true,
+    load: false,
     edit: false,
 });
 
@@ -135,6 +137,7 @@ watch(() => page.value.search.key, (val) => !val && getList())
 
 // Fetch
 const getList = async () => {
+    if (!authStore.isLogin) return
     try {
         loading.value.load = true;
         const data = await useAPI("client/service/list", JSON.parse(JSON.stringify(page.value)));

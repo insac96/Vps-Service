@@ -40,7 +40,7 @@
               </UiFlex>
             </div>
           </UiFlex>
-          <NuxtLink href="/" class="btn btn-primary w-full mt-3 text-end block hover:underline text-primary" size="md">
+          <NuxtLink href="/shop" class="btn btn-primary w-full mt-3 text-end block hover:underline text-primary" size="md">
             Chọn thêm dịch vụ khác</NuxtLink>
         </div>
         <div class="col-span-12 md:col-span-4 border border-gray-200 dark:border-gray-800 rounded-lg p-4 h-fit">
@@ -62,7 +62,7 @@
           <UButton type="button" @click="router.push('/cart/checkout')"
             class="btn btn-primary w-full h-[40px] justify-center align-center mt-3">Thanh toán
           </UButton>
-          <NuxtLink href="/"
+          <NuxtLink href="/shop"
             class="btn btn-primary w-full justify-center text-primary align-center mt-2 text-center block" size="md">
             Quay lại</NuxtLink>
         </div>
@@ -89,19 +89,18 @@
         </UForm>
       </UModal>
     </div>
-    <div v-if="!cartStore.cart || cartStore.cart.length === 0">
+    <div v-if="!authStore.isLogin">
+      <UiAuth title="Vui lòng đăng nhập trưóc"/>
+    </div>
+    <div v-if="!cartStore.cart || cartStore.cart.length === 0 && authStore.isLogin">
       <UiEmpty class="mt-20" title="Giỏ hàng rỗng" />
-      <NuxtLink href="/" class="btn btn-primary w-full mt-3 text-center block hover:underline text-primary" size="md">Quay lại</NuxtLink>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-definePageMeta({
-  middleware: 'auth'
-})
-
 const cartStore = useCartStore();
+const authStore = useAuthStore();
 const router = useRouter();
 const modal = ref(false);
 const loading = ref(false);

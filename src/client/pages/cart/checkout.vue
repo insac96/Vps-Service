@@ -76,7 +76,7 @@
         </div>
       </div>
     </div>
-    <div v-if="!cartStore.cart || cartStore.cart.length === 0">
+    <div v-if="!cartStore.cart || cartStore.cart.length === 0 && authStore.isLogin">
       <UiEmpty class="mt-20" title="Giỏ hàng rỗng" />
       <NuxtLink href="/" class="btn btn-primary w-full mt-3 text-center block hover:underline text-primary" size="md">
         Quay lại</NuxtLink>
@@ -85,11 +85,9 @@
 </template>
 
 <script lang="ts" setup>
-definePageMeta({
-  middleware: 'auth'
-})
 import { useClipboard } from "@vueuse/core";
 const { copy, isSupported } = useClipboard();
+const authStore = useAuthStore();
 const cartStore = useCartStore();
 const router = useRouter();
 const loading = ref(false);
