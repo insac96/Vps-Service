@@ -36,8 +36,9 @@ export default defineEventHandler(async (event) => {
   try {
     // @ts-expect-error
     await callNodeListener(handler.single('image'), event.node.req, event.node.res)
+
+    // @ts-expect-error
     const file = event.node.req.file
-    console.log(file);
     
     const url = `/file/${file.filename}`
     return resp(event, { message: 'Tải hình ảnh thành công', result: url })

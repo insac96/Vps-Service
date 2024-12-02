@@ -5,7 +5,7 @@ export default defineEventHandler(async (event) => {
     const auth = await getAuth(event) as IAuth
 
     const runtimeConfig = useRuntimeConfig(event)
-    deleteCookie(event, 'token-auth', runtimeConfig.public.COOKIE_CONFIG)
+    deleteCookie(event, 'token-auth', runtimeConfig.public.cookieConfig)
     return resp(event, { message: 'Đăng xuất thành công' })
   } 
   catch (e:any) {

@@ -5,10 +5,7 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",
-    "start": "env-cmd node dist/server/core/index.mjs",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "start": "env-cmd node dist/server/core/index.mjs"
   },
   "dependencies": {
     "@nuxt/icon": "^1.8.2",
@@ -28,9 +25,14 @@
     "nuxt": "^3.14.1592",
     "path": "^0.12.7",
     "pinia": "^2.2.6",
-    "sass": "^1.81.0",
+    "sass": "^1.69.4",
     "v-calendar": "^3.1.2",
     "vue": "latest",
     "vue-router": "latest"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/md5": "^2.3.5",
+    "@types/multer": "^1.4.12"
   }
 }

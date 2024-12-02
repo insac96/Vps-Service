@@ -1,3 +1,5 @@
+import type { IAuth } from "~~/types"
+
 export default defineEventHandler(async (event) => {
   try {
     const auth = await getAuth(event) as IAuth
@@ -10,7 +12,6 @@ export default defineEventHandler(async (event) => {
       .populate({ path: 'os', select: 'name' })
       .populate({ path: 'order', populate: { path: 'gate', select: 'name person number' } })
     if (!service) throw 'Không tìm thấy dịch vụ'
-    console.log(service);
     
     return resp(event, { result: service })
   } catch (error) {

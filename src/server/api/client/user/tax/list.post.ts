@@ -11,7 +11,6 @@ export default defineEventHandler(async (event) => {
 
     const sorting : any = { }
     sorting[sort.column] = sort.direction == 'desc' ? -1 : 1
-    console.log(search);
     
     const match : any = { user: auth._id }
 
