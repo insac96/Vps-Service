@@ -30,8 +30,6 @@ const authStore = useAuthStore()
   width: 100%
   z-index: 1
 
-
-
   main
     position: relative
     grid-area: main

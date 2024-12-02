@@ -1,7 +1,6 @@
 <template>
   <div class="relative h-full min-h-full">
     <LayoutAdminHeader />
-
     <div class="
       grid grid-cols-12 gap-0 
       min-h-[calc(100%-var(--header-size))]
