@@ -25,7 +25,7 @@
           <UiText size="xs">{{ news.view || 0 }}</UiText>
         </UiFlex>
 
-        <UBadge color="gray" class="cursor-pointer" >{{ news.category.name }}</UBadge>
+        <UBadge color="gray" class="cursor-pointer" @click="navigateTo(`/news/category/${news.category.key}`)">{{ news.category.name }}</UBadge>
       </UiFlex>
     </template>
   </UCard>

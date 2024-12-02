@@ -63,7 +63,7 @@ const authStore = useAuthStore();
 const columns = [
     {
         key: "product.name",
-        label: "Tên VPS",
+        label: "Gói đăng ký",
     },
     {
         key: "os.name",

@@ -16,7 +16,6 @@
       ">
         <LayoutAdminNav />
       </div>
-      
       <div class="xl:col-span-10 col-span-12">
         <main class="p-4">
           <slot></slot>

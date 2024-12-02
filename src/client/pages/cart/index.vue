@@ -1,6 +1,6 @@
 <template>
   <div>
-    <UBreadcrumb class="mb-3" divider="/" :links="[{ label: 'Trang chủ', to: '/' }, { label: 'Giỏ hàng' }]" />
+    <UBreadcrumb class="mb-3 mt-2" divider="/" :links="[{ label: 'Trang chủ', to: '/' }, { label: 'Giỏ hàng' }]" />
     <div v-if="!!cartStore.cart && cartStore.cart.length > 0" class="mt-3">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-2">
         <div class="col-span-12 md:col-span-8 border border-gray-200 dark:border-gray-800 rounded-lg p-4">
@@ -32,7 +32,8 @@
               </UiFlex>
               <UiFlex color="primary" class="mt-2 " size="sm">
                 <UButton size="sm" weight="semibold" class="ml-auto w-max"
-                  icon="material-symbols:check-indeterminate-small" @click="updateCartQuantity(item._id, item.quantity - 1)">
+                  icon="material-symbols:check-indeterminate-small"
+                  @click="updateCartQuantity(item._id, item.quantity - 1)">
                 </UButton>
                 <UiText size="sm" weight="semibold" class="ml-2">{{ item.quantity }}</UiText>
                 <UButton size="sm" weight="semibold" class="ml-2" icon="material-symbols:add"

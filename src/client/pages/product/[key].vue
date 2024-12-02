@@ -1,8 +1,7 @@
 <template>
   <div>
     <div v-if="!!product" class="mt-3">
-      <UBreadcrumb class="mb-3" divider="/"
-        :links="[{ label: 'Trang chủ', to: '/' }, { label: product.name }, { label: 'Đăng ký' }]" />
+      <UBreadcrumb class="mb-3" divider="/" :links="[{ label: 'Trang chủ', to: '/' }, { label: product.name }, { label: 'Đăng ký' }]" />
       <div>
         <UForm class="grid grid-cols-1 md:grid-cols-12 gap-2" :validate="validate" :state="state" @submit="addToCart">
           <div class="col-span-12 md:col-span-8 border border-gray-200 dark:border-gray-800 rounded-lg p-4">

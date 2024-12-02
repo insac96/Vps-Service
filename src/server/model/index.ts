@@ -16,9 +16,14 @@ export default (mongoose : Mongoose) : IGlobalDB => {
   return {
     Config: DBConfig(mongoose),
     Gate: DBGate(mongoose),
+
+    News: DBNews(mongoose),
+    NewsCategory: DBNewsCategory(mongoose),
+
     User: DBUser(mongoose),
     UserTax: DBUserTax(mongoose),
     UserCart: DBUserCart(mongoose),
+    
     Product: DBProduct(mongoose),
     News: DBNews(mongoose),
     NewsCategory: DBNewsCategory(mongoose),

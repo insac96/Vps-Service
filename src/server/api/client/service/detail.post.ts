@@ -1,7 +1,6 @@
 export default defineEventHandler(async (event) => {
   try {
     const auth = await getAuth(event) as IAuth
-    if (!auth) throw 'Vui lòng đăng nhập trước'
 
     const { _id } = await readBody(event)
     if (!_id) throw 'Dữ liệu đầu vào không hợp lệ'

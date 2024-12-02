@@ -12,6 +12,7 @@ export interface IDBService {
   end_time: Date
   quantity: number
   number: number
+  money: number
   status: number
   info: Array
 }

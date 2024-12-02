@@ -1,7 +1,6 @@
 export default defineEventHandler(async (event) => {
   try {
     const user = (await getAuth(event)) as IDBUser;
-    if (!user) throw "Vui lòng đăng nhập trước";
     const cart = await DB.UserCart.find({ user: user._id })
       .populate({
         path: "product",
