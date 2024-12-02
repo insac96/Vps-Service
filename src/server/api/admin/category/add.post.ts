@@ -8,8 +8,8 @@ export default defineEventHandler(async (event) => {
     if(auth.type !== 100) throw 'Bạn không phải quản trị viên'
 
     const body = await readBody(event)
-    const { name, color , image } = body
-    if(!name || !color || !image) throw 'Dữ liệu đầu vào không hợp lệ'
+    const { name, image } = body
+    if(!name || !image) throw 'Dữ liệu đầu vào không hợp lệ'
     
     const key = formatVNString(event, name, '-')
 
@@ -17,7 +17,6 @@ export default defineEventHandler(async (event) => {
     if(!!getByName) throw 'Tên danh mục đã tồn tại'
 
     body.key = key
-    body.color = color.value
     await DB.Category.create(body)
     logAdmin(event, `Thêm danh mục sản phẩm <b>${name}</b>`)
     

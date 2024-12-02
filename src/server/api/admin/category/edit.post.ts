@@ -8,8 +8,8 @@ export default defineEventHandler(async (event) => {
 
 
     const body = await readBody(event)
-    const { _id, name, color, image } = body
-    if(!_id || !name || !color || !image) throw 'Dữ liệu đầu vào không hợp lệ'
+    const { _id, name, image } = body
+    if(!_id || !name || !image) throw 'Dữ liệu đầu vào không hợp lệ'
 
     const category = await DB.Category.findOne({ _id: _id }).select('name')
     if(!category) throw 'Danh mục không tồn tại'
@@ -20,7 +20,6 @@ export default defineEventHandler(async (event) => {
 
       body.key = key
     }
-    body.color = color.value
     delete body['_id']
     await DB.Category.updateOne({ _id: _id }, body)
 
